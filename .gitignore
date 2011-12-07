@@ -32,6 +32,13 @@
 *.sql
 *.sqlite
 
+#################
+# Eclipse Files #
+#################
+.classpath
+.project
+.settings
+
 ######################
 # OS generated files #
 ######################
