@@ -47,3 +47,7 @@ ehthums.db
 Icon?
 Thumbs.db
 
+###############
+# Directories #
+###############
+classes/
