@@ -24,7 +24,7 @@
 
 ;; determine if the provided structure
 ;; is mapable
-(defn mapable? [something]
+(defn listy? [something]
   (or (list? something)
       (vector? something)
       (set? something)
@@ -37,19 +37,21 @@
               ; if this is a node of the specified tag
               ; and it has children, create a list of 
               ; keep this node and process its children
-              (and (tagp node atag) 
-                   (mapable? node)
+              (and (listy? node)
+                   (tagp node atag)
                    (children node))
-              (conj (list node) 
-                    (mapcat this (children node)))
+              (conj  (list node)
+                     (mapcat this (children node)))
               ; if this is a node of the specified tag
               ; keep this node (at this point, we know it 
               ; does not have any children
-              (tagp node atag) (list node)
+              (and (listy? node) 
+                   (tagp node atag)) 
+              (list node)
               ; if it has children, go ahead and search them
               ; this may contain a node of the tag we are looking 
               ; for
-              (and (mapable? node)
+              (and (listy? node)
                    (children node))
               (mapcat this (children node)))) 
             soup))
@@ -61,6 +63,7 @@
 (defn eat-url [url]
   (let [{status :status, header :header, body :body} (client/get url)]
     ; perform crawler responsiblity
+    (tag-me (tagsoup/parse-string body) :a)
     ))
 
 
