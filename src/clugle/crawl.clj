@@ -22,13 +22,15 @@
 (defn tagp [node tag]
   (= (first node) tag))
 
+;; determine if the provided structure
+;; is mapable
 (defn mapable? [something]
   (or (list? something)
       (vector? something)
       (set? something)
       (seq? something)))
 
-;; gimme dem anchors
+;; gimme dem tags
 (defn tag-me [soup atag]
   (mapcat (fn this [node]
             (cond
