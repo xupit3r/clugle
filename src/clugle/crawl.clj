@@ -1,74 +1,93 @@
 (ns clugle.crawl
   (:require [clj-http.client :as client] 
+            [clugle.console :as console]
+            [clugle.util :as util]
             [pl.danieljanus.tagsoup :as tagsoup]))
 
 ;;;; Parsed HTML Data Helper Functions ;;;;
 
 ;; get the children of a provided node
 (defn children [node]
-  (rest (rest node)))
+  (if (util/listy? node)
+    (rest (rest node))
+    nil))
 
 ;; get the attributes of a provide node
 (defn attributes [node]
-  (first (rest node)))
+  (if (util/listy? node)
+    (first (rest node))
+    nil))
 
 ;; get the tag for a provided node
 (defn tagname [node]
-  (first node))
+  (if (util/listy? node)
+    (first node)
+    nil))
 
 ;;;; Tag Helper Functions ;;;;
 
 ;; is the current node the provided tag?
 (defn tagp [node tag]
-  (= (first node) tag))
-
-;; determine if the provided structure
-;; is mapable
-(defn listy? [something]
-  (or (list? something)
-      (vector? something)
-      (set? something)
-      (seq? something)))
-
+  (and (util/listy? node)
+       (= (first node) tag)))
+  
 ;; gimme dem tags
-(defn tag-me [soup atag]
-  (mapcat (fn this [node]
-            (cond
-              ; if this is a node of the specified tag
-              ; and it has children, create a list of 
-              ; keep this node and process its children
-              (and (listy? node)
-                   (tagp node atag)
-                   (children node))
-              (conj  (list node)
-                     (mapcat this (children node)))
-              ; if this is a node of the specified tag
-              ; keep this node (at this point, we know it 
-              ; does not have any children
-              (and (listy? node) 
-                   (tagp node atag)) 
-              (list node)
-              ; if it has children, go ahead and search them
-              ; this may contain a node of the tag we are looking 
-              ; for
-              (and (listy? node)
-                   (children node))
-              (mapcat this (children node)))) 
-            soup))
-
+;; retrieves tags of a specific type
+;; (defined by the atag parameter)
+;; NOTE: using tagsoup, this method must operate
+;; from the context of the HTML tag's children
+;; (i.e. a list containing HEAD and BODY)
+(defn tag-me
+  ([the-children atag] (tag-me the-children atag '()))
+  ([the-children atag acc]
+    (loop [idx 1 the-child (nth the-children 0 nil) acc1 acc]
+      (let [nth-tag (tagname the-child)
+            htn-attributes (attributes the-child)
+            nth-children (children the-child)]
+        (if (= nth-tag atag)
+          (if (not (nil? nth-children))
+            (recur (inc idx)
+                   (nth the-children idx nil)
+                   (tag-me nth-children atag (cons the-child acc1)))
+            (recur (inc idx) 
+                   (nth the-children idx nil) 
+                   (cons the-child acc1)))
+          (if (not (nil? nth-children))
+            (recur (inc idx)
+                   (nth the-children idx nil)
+                   (tag-me nth-children atag acc1))
+            acc1))))))
 
 ;;;; Crawler Tasks ;;;;
+
 
 ;; returns some delicious HTML soup
 (defn eat-url [url]
   (let [{status :status, header :header, body :body} (client/get url)]
     ; perform crawler responsiblity
-    (tag-me (tagsoup/parse-string body) :a)
+    (tagsoup/parse-string body)))
+
+
+
+;;;; Tests (these will eventually need to be moved)
+
+
+;; print help for testing tag-me
+(defn print-tag-me [body atag]
+  (let [tag-me-res (tag-me (children (tagsoup/parse-string body)) atag)]
+    (console/print-generic-tag
+    atag
+    (util/size tag-me-res))))
+
+;; test tag-me
+(defn test-tag-me []
+  (let [{status :status, header :header, body :body} (client/get "http://thejoeshow.net")]
+    (print-tag-me body :a)
+    (print-tag-me body :h1)
+    (print-tag-me body :h2)
+    (print-tag-me body :h3)
+    (print-tag-me body :div)
+    (print-tag-me body :p)
+    (print-tag-me body :ol)
+    (print-tag-me body :li)
     ))
-
-
-  
-
-
-
-
