@@ -66,28 +66,3 @@
   (let [{status :status, header :header, body :body} (client/get url)]
     ; perform crawler responsiblity
     (tagsoup/parse-string body)))
-
-
-
-;;;; Tests (these will eventually need to be moved)
-
-
-;; print help for testing tag-me
-(defn print-tag-me [body atag]
-  (let [tag-me-res (tag-me (children (tagsoup/parse-string body)) atag)]
-    (console/print-generic-tag
-    atag
-    (util/size tag-me-res))))
-
-;; test tag-me
-(defn test-tag-me []
-  (let [{status :status, header :header, body :body} (client/get "http://thejoeshow.net")]
-    (print-tag-me body :a)
-    (print-tag-me body :h1)
-    (print-tag-me body :h2)
-    (print-tag-me body :h3)
-    (print-tag-me body :div)
-    (print-tag-me body :p)
-    (print-tag-me body :ol)
-    (print-tag-me body :li)
-    ))

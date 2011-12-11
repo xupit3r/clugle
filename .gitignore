@@ -51,3 +51,8 @@ Thumbs.db
 # Directories #
 ###############
 classes/
+
+#################
+# Scratch Files #
+#################
+scratch.txt
