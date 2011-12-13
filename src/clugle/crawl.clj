@@ -2,27 +2,8 @@
   (:require [clj-http.client :as client] 
             [clugle.console :as console]
             [clugle.util :as util]
+            [clugle.soupu :as soupu]
             [pl.danieljanus.tagsoup :as tagsoup]))
-
-;;;; Parsed HTML Data Helper Functions ;;;;
-
-;; get the children of a provided node
-(defn children [node]
-  (if (util/listy? node)
-    (rest (rest node))
-    nil))
-
-;; get the attributes of a provide node
-(defn attributes [node]
-  (if (util/listy? node)
-    (first (rest node))
-    nil))
-
-;; get the tag for a provided node
-(defn tagname [node]
-  (if (util/listy? node)
-    (first node)
-    nil))
 
 ;;;; Tag Helper Functions ;;;;
 
@@ -41,9 +22,9 @@
   ([the-children atag] (tag-me the-children atag '()))
   ([the-children atag acc]
     (loop [idx 1 the-child (nth the-children 0 nil) acc1 acc]
-      (let [nth-tag (tagname the-child)
-            htn-attributes (attributes the-child)
-            nth-children (children the-child)]
+      (let [nth-tag (soupu/tagname the-child)
+            htn-attributes (soupu/attributes the-child)
+            nth-children (soupu/children the-child)]
         (if (= nth-tag atag)
           (if (not (nil? nth-children))
             (recur (inc idx)

@@ -1,13 +1,14 @@
 (ns clugle.test.crawl
     (:use clojure.test)
     (:require [clugle.crawl :as crawl]
+              [clugle.soupu :as soupu]
               [clj-http.client :as client] 
               [clugle.util :as util]
               [pl.danieljanus.tagsoup :as tagsoup]))
 ;; test tag-me
 (deftest test-tag-me []
   (let [{status :status, header :header, body :body} (client/get "http://thejoeshow.net")]
-    (let [html-children (crawl/children (tagsoup/parse-string body))]
+    (let [html-children (soupu/children (tagsoup/parse-string body))]
       (is (= 11 (util/size (crawl/tag-me html-children :a))))
       (is (= 1 (util/size (crawl/tag-me html-children :h1))))
       (is (= 0 (util/size (crawl/tag-me html-children :h2))))
