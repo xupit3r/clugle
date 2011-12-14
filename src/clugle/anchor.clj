@@ -1,27 +1,38 @@
 (ns clugle.anchor
-  (:require clugle.soupu :as soupu)
-  (:import java.net URL))
+  (:require [clugle.soupu :as soupu])
+  (:import (java.net URL)))
 
 ;;;; functions for working with anchor tags ;;;;
 
-;; determines if a supplied 
-;; URL is absolute or relative
-;; ... I am using Clojure for a couple
-;; reasons, one of them is that I like 
-;; having available that big ole Java 
-;; library.  I think this is a case where 
-;; it would be helpful.
+;; is a URL absolute?
+(defn abs-url? [url]
+  (try
+    (do (URL. url) 
+      true)
+    (catch Exception e
+      false)))
+
+;; retrieve an href from an anchor
+(defn get-href [anchor]
+  (get (soupu/attributes anchor) :href))
 
 ;; returns the supplied set of anchors
 ;; but with all anchors defined using 
 ;; absolute paths
 (defn bld-abs-anchor [base anchors]
   (let [baseUrl (URL. base)]
-    (mapcat (fn [an]
-              (let [newURL (URL. baseURL 
-                                 (get (soupu/attributes an) :href))]
-              (assoc (soupu/attributes an) 
-                     :href
-                     (.toString newURL)))) 
-            anchors)))
+    (map 
+      (fn [an]
+        (let [theUrl (get-href an)]
+          (if (not (abs-url? theUrl))
+            (let [newURL (URL. baseUrl (get-href an))]
+              (vector
+                (nth an 0)
+                (assoc (soupu/attributes an) 
+                       :href
+                       (.toString newURL))
+                (nth an 2)))
+            an)))
+      anchors)))
+    
 
