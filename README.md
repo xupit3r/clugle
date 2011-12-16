@@ -1,6 +1,6 @@
 # clugle
 
-A search engine written in Clojure, just for fun!
+Tools to read and analyze various code repositories.
 
 ## Usage
 
