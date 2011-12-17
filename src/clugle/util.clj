@@ -2,6 +2,10 @@
 
 ;;;; general utility methods for the project
 
+;; sum up values in a list
+(defn sum [lst]
+  (apply + lst))
+
 ;; remove empty lists from a provided list
 (defn drop-empties
   ([lst] (drop-empties lst '()))

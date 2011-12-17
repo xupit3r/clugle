@@ -1,4 +1,5 @@
-(ns clugle.textu)
+(ns clugle.textu
+  (:use clugle.util))
 
 
 
@@ -27,6 +28,38 @@
   ([txt delimiter]
     (let [tokens (.split txt (delim delimiter))]
       (map #(vector % 1) tokens))))
+
+;; creates a grouping of all unique instances 
+;; of words (tokens)
+;; note: this assumes that we have a list 
+;; of tuples that represent a tokenized version 
+;; of a body of text
+(defn group-instances [tokenized]
+  (->> 
+    (group-by first tokenized)
+    (map (fn [[k v]]
+           {k (map second v)}))
+    (apply merge-with conj)))
+
+;; sum up the value portion 
+;; of a key value pair
+(defn sum-v [[k v]]
+  {k (sum v)})
+
+;; build a final mapping of frequency 
+;; counts of tokens (token -> frequency)
+(defn build-freq-map [instances]
+    (apply merge 
+           (map sum-v instances)))
+
+;; builds a frequency count
+;; of words appearing in a string
+(defn word-freq [str]
+  (->> 
+    (tokenize str)
+    (group-instances)
+    (build-freq-map)))
+
       
     
 
