@@ -27,31 +27,4 @@
 (defn tagp [node tag]
   (and (util/listy? node)
        (= (first node) tag)))
-  
-;; gimme dem tags
-;; retrieves tags of a specific type
-;; (defined by the atag parameter)
-;; NOTE: using tagsoup, this method must operate
-;; from the context of the HTML tag's children
-;; (i.e. a list containing HEAD and BODY)
-(defn tag-me
-  ([the-children atag] (tag-me the-children atag '()))
-  ([the-children atag acc]
-    (loop [idx 1 the-child (nth the-children 0 nil) acc1 acc]
-      (let [nth-tag (tagname the-child)
-            htn-attributes (attributes the-child)
-            nth-children (children the-child)]
-        (if (= nth-tag atag)
-          (if (not (nil? nth-children))
-            (recur (inc idx)
-                   (nth the-children idx nil)
-                   (tag-me nth-children atag (cons the-child acc1)))
-            (recur (inc idx) 
-                   (nth the-children idx nil) 
-                   (cons the-child acc1)))
-          (if (not (nil? nth-children))
-            (recur (inc idx)
-                   (nth the-children idx nil)
-                   (tag-me nth-children atag acc1))
-            acc1))))))
 
