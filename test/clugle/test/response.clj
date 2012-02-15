@@ -1,6 +1,6 @@
 (ns clugle.test.response
   (:use [clojure.test])
-  (:use [clugle.response]))
+  (:use [clugle.web.response]))
 
 (deftest test-handle-json []
   (let [simple-json "{\"joe\" : \"d\", \"jim\" : \"e\"}"] 

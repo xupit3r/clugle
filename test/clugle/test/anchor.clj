@@ -1,6 +1,6 @@
 (ns clugle.test.anchor
   (:use [clojure.test])
-  (:use [clugle.anchor]))
+  (:use [clugle.web.anchor]))
 
 ;; test the abs-url? function
 ;; run through a set of URLs both 

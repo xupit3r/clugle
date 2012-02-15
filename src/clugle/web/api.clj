@@ -1,6 +1,6 @@
-(ns clugle.api
-    (:require [clugle.http :as http] 
-              [clugle.response :as response]))
+(ns clugle.web.api
+    (:require [clugle.web.http :as http] 
+              [clugle.web.response :as response]))
 
 ;;;; this file contains logic for generally 
 ;;;; dealing with service APIs

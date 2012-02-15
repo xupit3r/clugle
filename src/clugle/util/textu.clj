@@ -1,5 +1,5 @@
-(ns clugle.textu
-  (:use clugle.util))
+(ns clugle.util.textu
+  (:use clugle.util.hlpr))
 
 
 

@@ -1,4 +1,4 @@
-(ns clugle.response
+(ns clugle.web.response
   (:require [cheshire.core :as json]))
 
 ;;;; logic for handling responses

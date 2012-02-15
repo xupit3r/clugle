@@ -1,4 +1,4 @@
-(ns clugle.console)
+(ns clugle.out.console)
 
 ;;;; console printing
 

@@ -1,23 +1,23 @@
-(ns clugle.soupu
-  (:require [clugle.util :as util]))
+(ns clugle.web.soupu
+  (:require [clugle.util.hlpr :as hlpr]))
 
 ;;;; Parsed HTML Data Helper Functions ;;;;
 
 ;; get the children of a provided node
 (defn children [node]
-  (if (util/listy? node)
+  (if (hlpr/listy? node)
     (rest (rest node))
     nil))
 
 ;; get the attributes of a provide node
 (defn attributes [node]
-  (if (util/listy? node)
+  (if (hlpr/listy? node)
     (first (rest node))
     nil))
 
 ;; get the tag for a provided node
 (defn tagname [node]
-  (if (util/listy? node)
+  (if (hlpr/listy? node)
     (first node)
     nil))
 
@@ -25,6 +25,6 @@
 
 ;; is the current node the provided tag?
 (defn tagp [node tag]
-  (and (util/listy? node)
+  (and (hlpr/listy? node)
        (= (first node) tag)))
 

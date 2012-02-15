@@ -1,6 +1,6 @@
 (ns clugle.test.textu
   (:use [clojure.test])
-  (:use [clugle.textu]))
+  (:use [clugle.util.textu]))
 
 
 ;; test the tokenizing of a string

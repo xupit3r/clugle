@@ -1,4 +1,4 @@
-(ns clugle.http
+(ns clugle.web.http
   (:require [clj-http.client :as client]))
 
 ;;;; HTTP utility methods

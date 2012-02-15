@@ -1,6 +1,6 @@
 (ns clugle.test.api
     (:use [clojure.test])
-    (:use [clugle.api]))
+    (:use [clugle.web.api]))
 
 ;; some mock functions to test 
 ;; the API request process

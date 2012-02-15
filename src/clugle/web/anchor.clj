@@ -1,5 +1,5 @@
-(ns clugle.anchor
-  (:require [clugle.soupu :as soupu])
+(ns clugle.web.anchor
+  (:require [clugle.web.soupu :as soupu])
   (:import (java.net URL)))
 
 ;;;; functions for working with anchor tags ;;;;

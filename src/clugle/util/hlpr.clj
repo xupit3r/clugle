@@ -1,4 +1,4 @@
-(ns clugle.util)
+(ns clugle.util.hlpr)
 
 ;;;; general utility methods for the project
 
