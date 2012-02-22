@@ -57,3 +57,4 @@ classes/
 #################
 scratch.txt
 .lein-failures
+.lein-deps-sum
