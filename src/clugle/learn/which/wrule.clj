@@ -23,7 +23,6 @@
                   [(first sr) 
                    (into #{} (rest sr))]) r)))
 
-
 ;; to be used to reduce a 
 ;; set of boolean values to 
 ;; a scalar (boolean)
@@ -44,5 +43,3 @@
                    (empty? 
                      (difference v (k r2c))))
                  r1c))))
-
-
