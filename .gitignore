@@ -51,6 +51,7 @@ Thumbs.db
 # Directories #
 ###############
 classes/
+.cake/
 
 #################
 # Scratch Files #
