@@ -19,6 +19,9 @@
              :stats
              :comp))
 
+;; declare the functions in this file
+(declare and-reduce! eql combine)
+
 ;; to be used to reduce a
 ;; set of boolean values to
 ;; a scalar (boolean)

@@ -11,7 +11,7 @@
 ;;;; learner)
 
 ;; declare the functions in this file
-(declare wadd wadd! rmlast pick1 pick1-worker find-total)
+(declare wadd wadd! rmlast pick1 pick1-worker find-total pick2)
 
 ;; add a rule to the stack
 (defn wadd [rule stk n]
@@ -39,8 +39,8 @@
 (defn pick1 [stk]
   (pick1-worker
     (find-total stk)
-    (/ (+ 1 (prob/mrand 100) 100))
-    stk))
+    (/ (+ 1 (prob/mrand 100)) 
+       100) stk))
 
 ;; helper function for carrying out the
 ;; selection of a rule from the WHICH stack
@@ -52,9 +52,9 @@
           score (/ (:score (first stk)) total)]
       (cond (> score enough) maybe
             (nil? vrest) maybe
-            (true) (pick1-worker total
-                                 (- enough score)
-                                 (vrest))))))
+            true (pick1-worker total
+                               (- enough score)
+                               vrest)))))
 
 ;; determine the sum total of
 ;; scores for rules on the 
@@ -63,3 +63,11 @@
   (->>
     (map #(:score %) stk)
     (apply +)))
+
+;; selects two random rules
+;; from the stack and combines
+;; the rules, returning the result
+(defn pick2 [stk]
+  (wrule/combine
+    (pick1 stk)
+    (pick1 stk)))

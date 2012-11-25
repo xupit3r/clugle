@@ -9,6 +9,10 @@
 ;; seeded random number generator
 (def RANNUM_GEN (Random. RANNUM_SEED))
 
+;; reset the seed
+(defn rannum-reset []
+  (.setSeed RANNUM_GEN RANNUM_SEED))
+
 ;; return a random number between
 ;; 0 and max. (NOTE: this uses a
 ;; seeded random number generator)

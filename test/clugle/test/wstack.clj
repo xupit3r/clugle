@@ -1,6 +1,7 @@
 (ns clugle.test.wstack
   (:require [clugle.learn.which.wrule :as rule]
-            [clugle.learn.which.wstack :as stack])
+            [clugle.learn.which.wstack :as stack]
+            [clugle.util.prob :as prob])
   (:use [clojure.test]))
 
 ;; list of rules that we will
@@ -16,7 +17,7 @@
      :score 0.78)
    (struct-map
      rule/wrule
-     :rule {:a #{2 3} :b #{1 2 3}}
+     :rule {:a #{3} :b #{1 2}}
      :score 0.50)
    (struct-map
      rule/wrule
@@ -61,6 +62,7 @@
 ;; (clugle.util.prob/RANNUM_SEED) being set
 ;; to 1024).
 (deftest test-pick1 []
+  (prob/rannum-reset)
   (loop [idx 0 stk []]
     (if (< idx (count TEST_RULES))
       (recur (inc idx) 
@@ -69,7 +71,32 @@
                stk
                TEST_STACK_MAX_SIZE))
       (do
-        (is (= (:score (stack/pick1 stk) 0.96)))
-        (is (= (:score (stack/pick1 stk) 0.50)))
-        (is (= (:score (stack/pick1 stk) 0.50)))
-        (is (= (:score (stack/pick1 stk) 0.90)))))))
+        (is (= (:score (stack/pick1 stk)) 0.96))
+        (is (= (:score (stack/pick1 stk)) 0.50))
+        (is (= (:score (stack/pick1 stk)) 0.50))
+        (is (= (:score (stack/pick1 stk)) 0.90))))))
+
+;; tests the pick2 function of the stack.
+;; this function should select two "random"
+;; rules from the stack and return the
+;; combination. (NOTE: this test relies on a 
+;; random generator seed (clugle.util.prob/RANNUM_SEED)
+;; being set to 1024)
+(deftest test-pick2 []
+  (prob/rannum-reset)
+  (loop [idx 0 stk []]
+    (if (< idx (count TEST_RULES))
+      (recur (inc idx) 
+             (stack/wadd
+               (nth TEST_RULES idx)
+               stk
+               TEST_STACK_MAX_SIZE))
+      (do
+        (is (rule/eql (stack/pick2 stk)
+                      (struct-map
+                        rule/wrule
+                        :rule {:a #{2 3} :b #{1 2}})))
+        (is (rule/eql (stack/pick2 stk)
+                      (struct-map
+                        rule/wrule
+                        :rule {:a #{3} :b #{1 2 3}})))))))
