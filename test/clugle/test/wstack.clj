@@ -8,19 +8,19 @@
 (def TEST_RULES
   [(struct-map 
      rule/wrule
-     :rule [:a 2]
+     :rule {:a #{2}}
      :score 0.96)
    (struct-map 
      rule/wrule
-     :rule [[:a 2] [:b 2]]
+     :rule {:a #{2} :b #{2}}
      :score 0.78)
    (struct-map
      rule/wrule
-     :rule [[:a 2 3] [:b 1 2 3]]
+     :rule {:a #{2 3} :b #{1 2 3}}
      :score 0.50)
    (struct-map
      rule/wrule
-     :rule [:b 3]
+     :rule {:b #{3}}
      :score 0.90)])
 
 (def TEST_STACK_MAX_SIZE 100)
