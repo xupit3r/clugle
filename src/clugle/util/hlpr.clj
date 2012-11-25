@@ -33,3 +33,8 @@
       (set? something)
       (seq? something)))
 
+;; returns a random permutation of
+;; the provided list
+(defn shuffem [lst]
+  (shuffle lst))
+
