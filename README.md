@@ -1,6 +1,6 @@
 # clugle
 
-Tools to read and analyze various code repositories.
+Some general learning stuff and other tools.
 
 ## Usage
 
