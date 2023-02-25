@@ -1,6 +1,6 @@
-(ns clugle.test.api
-    (:use [clojure.test])
-    (:use [clugle.web.api]))
+(ns clugle.test.service
+    (:require [clojure.test :refer [deftest is]]
+              [clugle.web.service :refer [call-api]]))
 
 ;; some mock functions to test 
 ;; the API request process

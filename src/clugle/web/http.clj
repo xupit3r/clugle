@@ -12,7 +12,9 @@
 ;; returns a map containing the head 
 ;; and the body of the response
 (defn get-request [url]
-  (let [{status :status, header :header, body :body} (client/get "http://thejoeshow.net")]
+  (let [{status :status, header :header, body :body} 
+        (client/get url)]
     (if (res-ok? status)
-      {"header" header, "body" body})))
+      {"header" header, "body" body} 
+      {"error" "request failed"})))
 

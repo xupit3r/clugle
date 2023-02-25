@@ -1,4 +1,4 @@
-(ns clugle.web.api
+(ns clugle.web.service
     (:require [clugle.web.http :as http] 
               [clugle.web.response :as response]))
 
