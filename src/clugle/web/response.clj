@@ -10,8 +10,3 @@
 (defn handle-json [str] 
   (json/parse-string str true))
 
-
-;; takes in some XML and returns 
-;; a map
-(defn handle-xml [str] )
-

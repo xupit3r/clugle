@@ -4,13 +4,16 @@
               [cheshire.core :refer [generate-string]]
               [clugle.web.http :refer [request-get]]))
 
-(defn handler-wrapper [fun param]
+(defn extract-params [params, req]
+  (map (fn [param] (get (:params req) param)) params))
+
+(defn handler-wrapper [fun params]
   (fn [req]
-    (let [resp (fun (get (:params req) param))]
+    (let [resp (apply fun (extract-params params req))]
       {:status  200
        :headers {"Content-Type" "text/json"}
        :body  (generate-string resp)})))
 
 (defroutes api-routes
-  (GET "/api/url" [] (handler-wrapper request-get :url))
+  (GET "/api/http/url" [] (handler-wrapper request-get [:url]))
   (route/not-found "Error, page not found!"))

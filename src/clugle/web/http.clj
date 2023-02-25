@@ -4,8 +4,7 @@
 ;;;; HTTP utility methods
 
 ;; was it a good response?
-(defn ok? [status]
-  (if (> status 200) false true))
+(defn ok? [status] (< status 300))
 
 ;; carries out an HTTP GET request
 ;; returns a map containing the head 
