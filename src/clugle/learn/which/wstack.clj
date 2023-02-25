@@ -1,6 +1,5 @@
 (ns clugle.learn.which.wstack
-  (:require [clugle.util.hlpr :as hlpr]
-            [clugle.util.prob :as prob]
+  (:require [clugle.util.prob :as prob]
             [clugle.learn.which.wrule :as wrule]))
 
 ;;;; code is a translation of the logic in the 

@@ -1,5 +1,5 @@
 (ns clugle.util.textu
-  (:use clugle.util.hlpr))
+  (:require [clugle.util.hlpr :refer [sum]]))
 
 
 

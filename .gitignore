@@ -59,3 +59,12 @@ classes/
 scratch.txt
 .lein-failures
 .lein-deps-sum
+
+#################
+# vscode stuffs #
+#################
+.calva
+.clj-kondo
+.lsp
+.nrepl-port
+target

@@ -1,6 +1,5 @@
 (ns clugle.learn.which.wrule
-  (:use [clojure.set])
-  (:require [clugle.util.hlpr :as hlpr]))
+  (:require [clojure.set :refer [difference union]]))
 
 ;; the WHICH rule definition
 ;; a rule is defined as a map 
