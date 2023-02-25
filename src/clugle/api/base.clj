@@ -2,7 +2,7 @@
     (:require [compojure.core :refer [defroutes, GET]]
               [compojure.route :as route]
               [cheshire.core :refer [generate-string]]
-              [clugle.web.http :refer [get-request]]))
+              [clugle.web.http :refer [request-get]]))
 
 (defn handler-wrapper [fun param]
   (fn [req]
@@ -12,5 +12,5 @@
        :body  (generate-string resp)})))
 
 (defroutes api-routes
-  (GET "/api/url" [] (handler-wrapper get-request :url))
+  (GET "/api/url" [] (handler-wrapper request-get :url))
   (route/not-found "Error, page not found!"))

@@ -29,7 +29,7 @@
 ;; carry out a call to some RESTful API
 (defn call-api
   ([url] (call-api 
-           (fn [url] (:body (http/get-request url))) 
+           (fn [url] (:body (http/request-get url))) 
            response/handle-json  
            canon-data
            url))
