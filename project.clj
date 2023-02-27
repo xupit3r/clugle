@@ -5,7 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [clj-http "3.12.3"]
-                 [clj-tagsoup "0.3.0" :exclusions [org.clojure/clojure]] 
+                 [org.clj-commons/hickory "0.7.3"] 
                  [cheshire "5.11.0"]
                  [compojure "1.7.0"] 
                  [http-kit "2.6.0"]
