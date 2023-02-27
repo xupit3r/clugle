@@ -10,14 +10,14 @@
        (not (or (string? content) (empty? content))))
      vec))))
 
-(defn collect-anchors [collected {content :content}]
+(defn collect [collected {content :content} desiredTag]
     (if (not (has-kiddos content)) 
       collected
       (flatten 
        (apply
         conj
-        (filterv (fn [{tag :tag}] (= tag :a)) content)
-        (for [item content] (collect-anchors collected item))))))
+        (filterv (fn [{tag :tag}] (= tag desiredTag)) content)
+        (for [item content] (collect collected item desiredTag))))))
 
 (defn parse-body [{body :body}]
  (->> (parse body)
@@ -25,5 +25,6 @@
 
 (defn process [url]
   (let [parsed (->> (request-get url) (parse-body))]
-    {:anchors (collect-anchors [] parsed)}))
+    {:anchors (collect [] parsed :a)
+     :paragraphs (collect [] parsed :p)}))
 
