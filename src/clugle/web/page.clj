@@ -3,12 +3,11 @@
              [hickory.core :refer [parse, as-hickory]]))
 
 (defn has-kiddos [vec]
-  (not 
-   (empty?
-    (filter
-     (fn [{content :content}]
-       (not (or (string? content) (empty? content))))
-     vec))))
+  (seq
+   (filter
+    (fn [{content :content}]
+      (not (or (string? content) (empty? content))))
+    vec)))
 
 (defn collect [collected {content :content} desiredTag]
     (if (not (has-kiddos content)) 
