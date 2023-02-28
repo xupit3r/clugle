@@ -1,6 +1,6 @@
 (ns clugle.api.base
     (:require [compojure.core :refer [defroutes, GET]]
-              [compojure.route :as route]
+              [compojure.route :refer [not-found]]
               [cheshire.core :refer [generate-string]]
               [clugle.web.page :refer [process]]))
 
@@ -16,4 +16,4 @@
 
 (defroutes api-routes
   (GET "/api/web/page" [] (handler process [:url :tags]))
-  (route/not-found "Error, page not found!"))
+  (not-found "Error, page not found!"))
