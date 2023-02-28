@@ -9,18 +9,18 @@
       (not (or (string? content) (empty? content))))
     vec)))
 
-(defn tag-em [tag content] 
-  (filterv (fn [{t :tag}]  (= t tag)) content))
+(defn tag-em [tags content] 
+  (filterv (fn [{t :tag}] (contains? tags t)) content))
 
 (defn bag-em [& stuffs]
   (flatten (apply conj stuffs)))
 
-(defn collect [collected {content :content} tag]
+(defn collect [collected {content :content} tags]
   (if (not (has-kiddos content)) 
     collected
     (bag-em
-      (tag-em tag content)
-      (for [tree content] (collect collected tree tag)))))
+      (tag-em tags content)
+      (for [tree content] (collect collected tree tags)))))
 
 (defn parse-body [{body :body}]
  (->> (parse body)
@@ -28,6 +28,5 @@
 
 (defn process [url]
   (let [parsed (->> (request-get url) (parse-body))]
-    {:anchors (collect [] parsed :a)
-     :paragraphs (collect [] parsed :p)}))
+    (group-by :tag (collect [] parsed #{:a :p :img}))))
 
