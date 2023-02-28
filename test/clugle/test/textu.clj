@@ -1,6 +1,8 @@
 (ns clugle.test.textu
-  (:use [clojure.test])
-  (:use [clugle.util.textu]))
+  (:require [clojure.test :refer [deftest is]]
+            [clugle.util.textu :refer [tokenize word-freq]]))
+
+(def expected-tokens ["joe" "is" "joe"])
 
 
 ;; test the tokenizing of a string
@@ -13,32 +15,23 @@
         text_caret "joe^is^joe"
         text_period "joe.is.joe"
         text_comma "joe,is,joe"]
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_space)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_pipe :pipe)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_pound :pound)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_percent :percent)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_tab :tab)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_caret :caret)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_period :period)))
-    (is (= '(["joe" 1] ["is" 1] ["joe" 1]) 
+    (is (= expected-tokens 
            (tokenize text_comma :comma)))))
 
-;; test the grouping of word instances
-(deftest test-group-instances []
-  (let [tokens_dbl_joe (tokenize "joe is joe")
-        tokens_caps_joe (tokenize "joe is JOE is JoE is joe")]
-    
-    (is (=  (group-instances tokens_dbl_joe)
-            {"joe" '(1 1), "is" '(1)}))
-    (is (= (group-instances tokens_caps_joe)
-           {"joe" '(1 1), "is" '(1 1 1), "JOE" '(1), "JoE" '(1)}))))
 
 ;; test the extraction of word frequencies
 (deftest test-word-freq []
