@@ -59,6 +59,7 @@ classes/
 scratch.txt
 .lein-failures
 .lein-deps-sum
+scratch
 
 #################
 # vscode stuffs #
