@@ -27,5 +27,5 @@
 ;; of words appearing in a string
 (defn word-freq [str]
   (->> 
-    (split str #" ")
+    (tokenize str)
     (frequencies)))
