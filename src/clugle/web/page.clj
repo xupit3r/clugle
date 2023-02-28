@@ -1,6 +1,7 @@
 (ns clugle.web.page
   (:require [clugle.web.http :refer [request-get]]
-             [hickory.core :refer [parse, as-hickory]]))
+            [hickory.core :refer [parse, as-hickory]]
+            [clojure.string :refer [split]]))
 
 (defn has-kiddos [vec]
   (seq
@@ -22,11 +23,13 @@
       (tag-em tags content)
       (for [tree content] (collect collected tree tags)))))
 
-(defn parse-body [{body :body}]
- (->> (parse body)
-      (as-hickory)))
+(defn tagset [tags]
+  (set (map keyword (split tags #","))))
 
-(defn process [url]
-  (let [parsed (->> (request-get url) (parse-body))]
-    (group-by :tag (collect [] parsed #{:a :p :img}))))
-
+(defn process [url tags]
+  (group-by 
+   :tag 
+   (collect
+    []
+    (-> (request-get url) :body parse as-hickory) 
+    (tagset tags))))

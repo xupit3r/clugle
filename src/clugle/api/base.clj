@@ -15,5 +15,5 @@
        :body  (generate-string resp)})))
 
 (defroutes api-routes
-  (GET "/api/web/page" [] (handler process [:url]))
+  (GET "/api/web/page" [] (handler process [:url :tags]))
   (route/not-found "Error, page not found!"))
