@@ -1,6 +1,6 @@
 (ns clugle.util.textu
   (:require [clojure.string :refer [split]]
-            [clugle.util.hlpr :refer [apply-mf]]))
+            [clugle.util.hlpr :refer [sum apply-mf]]))
 
 ;;;; logic for doing stuff with text
 
@@ -27,10 +27,10 @@
 ;; builds a frequency count
 ;; of words appearing in a string
 (defn word-freq [str]
-  (-> (tokenize str) frequencies))
+  (-> str tokenize frequencies))
 
 ;; creates a weighted frequency map
 (defn weighted [str]
   (let [freqs (word-freq str)
-        sum (->> freqs vals (apply +))]
+        sum (-> freqs vals sum)]
     (apply-mf freqs (fn [v] (/ v sum)))))
