@@ -1,6 +1,6 @@
 (ns clugle.test.textu
   (:require [clojure.test :refer [deftest is]]
-            [clugle.util.textu :refer [tokenize word-freq]]))
+            [clugle.util.textu :refer [tokenize word-freq weighted]]))
 
 (def expected-tokens ["joe" "is" "joe"])
 
@@ -37,5 +37,10 @@
 (deftest test-word-freq []
   (is (= (word-freq "joe is joe")
          {"joe" 2, "is" 1})))
+
+;; test the weighting of word frequencies
+(deftest test-weighted []
+  (is (= (weighted "joe is joe")
+         {"joe" (/ 2 3), "is" (/ 1 3)})))
     
 

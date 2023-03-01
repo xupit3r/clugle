@@ -26,6 +26,10 @@
 ;; builds a frequency count
 ;; of words appearing in a string
 (defn word-freq [str]
-  (->> 
-    (tokenize str)
-    (frequencies)))
+  (-> (tokenize str) frequencies))
+
+;; creates a weighted frequency map
+(defn weighted [str]
+  (let [freqs (word-freq str)
+        sum (->> freqs vals (apply +))]
+    (reduce-kv (fn [m k v] (assoc m k (/ v sum))) {} freqs)))
