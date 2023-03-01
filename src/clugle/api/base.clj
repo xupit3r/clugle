@@ -3,7 +3,7 @@
               [compojure.route :refer [not-found]]
               [cheshire.core :refer [generate-string]]
               [clugle.web.page :refer [process]]
-              [clugle.learn.text.words :refer [weighted]]))
+              [clugle.learn.text.base :refer [weighted]]))
 
 (defn extract-params [params, req]
   (map (fn [param] (get (:params req) param)) params))

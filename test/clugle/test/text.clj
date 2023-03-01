@@ -1,6 +1,6 @@
-(ns clugle.test.words
+(ns clugle.test.text
   (:require [clojure.test :refer [deftest is]]
-            [clugle.learn.text.words :refer [tokenize word-freq weighted]]))
+            [clugle.learn.text.base :refer [tokenize word-freq weighted]]))
 
 (def expected-tokens ["joe" "is" "joe"])
 

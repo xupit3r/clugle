@@ -1,4 +1,4 @@
-(ns clugle.learn.text.words
+(ns clugle.learn.text.base
   (:require [clojure.string :refer [split]]
             [clugle.util.hlpr :refer [sum apply-mf]]))
 
