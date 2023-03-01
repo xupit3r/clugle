@@ -1,5 +1,6 @@
 (ns clugle.util.textu
-  (:require [clojure.string :refer [split]]))
+  (:require [clojure.string :refer [split]]
+            [clugle.util.hlpr :refer [apply-mf]]))
 
 ;;;; logic for doing stuff with text
 
@@ -32,4 +33,4 @@
 (defn weighted [str]
   (let [freqs (word-freq str)
         sum (->> freqs vals (apply +))]
-    (reduce-kv (fn [m k v] (assoc m k (/ v sum))) {} freqs)))
+    (apply-mf freqs (fn [v] (/ v sum)))))

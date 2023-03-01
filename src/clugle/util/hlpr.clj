@@ -38,3 +38,9 @@
 (defn shuffem [lst]
   (shuffle lst))
 
+;; provides a simple abstraction to update
+;; a hash map by appying a function (f) to
+;; each value
+(defn apply-mf [m f]
+  (reduce-kv (fn [m k v] (assoc m k (f v))) {} m))
+
