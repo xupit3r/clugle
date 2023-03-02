@@ -1,6 +1,6 @@
 (ns clugle.learn.text.base
   (:require [clojure.string :refer [split]]
-            [clugle.util.hlpr :refer [sum apply-mf]]))
+            [clugle.util.hlpr :refer [sum apply-mf vec-range]]))
 
 ;;;; logic for doing stuff with text
 
@@ -34,3 +34,14 @@
   (let [freqs (word-freq str)
         sum (-> freqs vals sum)]
     (apply-mf freqs (fn [v] (/ v sum)))))
+
+;; build ngrams for a given string
+;; return is a vector of vectors, where
+;; each subvector is of length n and
+;; represents an ngram from the source
+;; string
+(defn ngram [str n]
+  (let [tokens (tokenize str)]
+    (vec (for [i (vec-range tokens)] 
+      (vec (for [j (range n)]
+        (nth tokens (+ i j) "")))))))

@@ -44,3 +44,7 @@
 (defn apply-mf [m f]
   (reduce-kv (fn [m k v] (assoc m k (f v))) {} m))
 
+;; provides an index range for a vector
+(defn vec-range [vec]
+  (range (- (count vec) 1)))
+

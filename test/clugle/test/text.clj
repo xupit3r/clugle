@@ -1,6 +1,6 @@
 (ns clugle.test.text
   (:require [clojure.test :refer [deftest is]]
-            [clugle.learn.text.base :refer [tokenize word-freq weighted]]))
+            [clugle.learn.text.base :refer [tokenize word-freq weighted ngram]]))
 
 (def expected-tokens ["joe" "is" "joe"])
 
@@ -42,5 +42,16 @@
 (deftest test-weighted []
   (is (= (weighted "joe is joe")
          {"joe" (/ 2 3), "is" (/ 1 3)})))
+
+;; super simple test for ngram
+(def expected-ngram
+  [["joe" "is" "typing" "this"]
+   ["is" "typing" "this" "sentence"]
+   ["typing" "this" "sentence" ""]
+   ["this" "sentence" "" ""]])
+
+(deftest test-ngram []
+  (is (= expected-ngram 
+         (ngram "joe is typing this sentence" 4))))
     
 
