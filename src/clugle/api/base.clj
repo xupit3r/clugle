@@ -1,21 +1,15 @@
 (ns clugle.api.base
-    (:require [compojure.core :refer [defroutes, GET]]
+    (:require [compojure.core :refer [defroutes GET]]
               [compojure.route :refer [not-found]]
-              [cheshire.core :refer [generate-string]]
+              [clugle.api.utils :refer [handler]]
               [clugle.web.page :refer [process]]
-              [clugle.learn.text.base :refer [weighted]]))
-
-(defn extract-params [params, req]
-  (map (fn [param] (get (:params req) param)) params))
-
-(defn handler [fun params]
-  (fn [req]
-    (let [resp (apply fun (extract-params params req))]
-      {:status  200
-       :headers {"Content-Type" "text/json"}
-       :body  (generate-string resp)})))
+              [clugle.learn.text.base :refer [weighted ngram]]))
 
 (defroutes api-routes
-  (GET "/api/web/page" [] (handler process [:url :tags]))
-  (GET "/api/learn/text/weighted" [] (handler weighted [:text]))
-  (not-found "Error, page not found!"))
+  (GET "/api/web/page" [] 
+    (handler process {:url str :tags str}))
+  (GET "/api/learn/text/weighted" [] 
+    (handler weighted {:text str}))
+  (GET "/api/learn/text/ngram" [] 
+    (handler ngram {:text str :n (fn [v] (Integer/parseInt v))}))
+  (not-found "no endpoint, bruh..."))
