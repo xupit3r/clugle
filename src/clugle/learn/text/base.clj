@@ -1,5 +1,7 @@
 (ns clugle.learn.text.base
   (:require [clojure.string :refer [split]]
+            [clojure.java.io :refer [file]]
+            [babashka.fs :refer [directory?]]
             [clugle.util.hlpr :refer [maxv apply-mf vec-range]]))
 
 ;;;; logic for doing stuff with text
@@ -15,6 +17,17 @@
         (= dkey :caret) #"\^"
         (= dkey :period) #"\."
         (= dkey :comma) #","))
+
+(defn doc-arr [docs] 
+  (map slurp 
+       (filter (fn [d] (not (directory? d))) docs)))
+
+;; read in all the files within a directory
+;; this reads them into an array of strings,
+;; so for directories with lotsa files...
+;; umm don't use this probably :)
+(defn load-docs [dir]
+  (-> dir file file-seq doc-arr vec))
 
 ;; creates a vector of tuples 
 ;; the first of each tuple is the 

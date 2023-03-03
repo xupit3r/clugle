@@ -9,6 +9,7 @@
                  [cheshire "5.11.0"]
                  [compojure "1.7.0"] 
                  [http-kit "2.6.0"]
-                 [ring/ring-defaults "0.3.4"]]
+                 [ring/ring-defaults "0.3.4"]
+                 [babashka/fs "0.3.17"]]
   :repl-options {:init-ns clugle.core}
   :main clugle.core)

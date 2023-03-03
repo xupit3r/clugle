@@ -18,7 +18,7 @@
     <url>https://github.com/xupit3r/clugle</url>
     <connection>scm:git:git://github.com/xupit3r/clugle.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/xupit3r/clugle.git</developerConnection>
-    <tag>58340bbdbca049ac9ec1f35c65708eb2dc65de45</tag>
+    <tag>4cf5a06490df4061012cec3c870aae3620643184</tag>
   </scm>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -97,6 +97,11 @@
       <groupId>ring</groupId>
       <artifactId>ring-defaults</artifactId>
       <version>0.3.4</version>
+    </dependency>
+    <dependency>
+      <groupId>babashka</groupId>
+      <artifactId>fs</artifactId>
+      <version>0.3.17</version>
     </dependency>
   </dependencies>
 </project>
