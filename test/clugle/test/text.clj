@@ -1,6 +1,6 @@
 (ns clugle.test.text
   (:require [clojure.test :refer [deftest is]]
-            [clugle.learn.text.base :refer [tokenize word-freq weighted ngram]]))
+            [clugle.learn.text.base :refer [tokenize termfreq weighted ngram]]))
 
 (def expected-tokens ["joe" "is" "joe"])
 
@@ -35,7 +35,7 @@
 
 ;; test the extraction of word frequencies
 (deftest test-word-freq []
-  (is (= (word-freq "joe is joe")
+  (is (= (termfreq "joe is joe")
          {"joe" 2, "is" 1})))
 
 ;; test the weighting of word frequencies

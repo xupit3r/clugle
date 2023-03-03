@@ -1,6 +1,6 @@
 (ns clugle.learn.text.base
   (:require [clojure.string :refer [split]]
-            [clugle.util.hlpr :refer [sum apply-mf vec-range]]))
+            [clugle.util.hlpr :refer [maxv apply-mf vec-range]]))
 
 ;;;; logic for doing stuff with text
 
@@ -26,14 +26,21 @@
 
 ;; builds a frequency count
 ;; of words appearing in a string
-(defn word-freq [str]
+(defn termfreq [str]
   (-> str tokenize frequencies))
 
 ;; creates a weighted frequency map
+;; this uses an augmented frequency,
+;; using the max frequency to weigh
+;; the frequencies relative to the total
+;; string
 (defn weighted [str]
-  (let [freqs (word-freq str)
-        sum (-> freqs vals sum)]
-    (apply-mf freqs (fn [v] (/ v sum)))))
+  (let [freqs (termfreq str)
+        maxf (-> freqs vals maxv)]
+    (apply-mf
+     freqs
+     (fn [v]
+       (+ 0.5 (* 0.5 (/ v maxf)))))))
 
 ;; build ngrams for a given string
 ;; return is a vector of vectors, where

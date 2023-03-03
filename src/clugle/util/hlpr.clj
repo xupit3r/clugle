@@ -6,6 +6,10 @@
 (defn sum [lst]
   (apply + lst))
 
+;; finds the max value
+(defn maxv [lst]
+  (apply max lst))
+
 ;; remove empty lists from a provided list
 (defn drop-empties
   ([lst] (drop-empties lst '()))
