@@ -1,5 +1,5 @@
 (ns clugle.learn.text.base
-  (:require [clojure.string :refer [split]]
+  (:require [clojure.string :as str]
             [clojure.java.io :refer [file]]
             [babashka.fs :refer [directory?]]
             [clugle.util.hlpr :refer [maxv apply-mf vec-range]]))
@@ -18,6 +18,11 @@
         (= dkey :period) #"\."
         (= dkey :comma) #","))
 
+;; super simple for right now...
+(defn clean-text [str]
+  (str/replace str #"\." ""))
+
+;; reads files into a list of strings
 (defn doc-arr [docs] 
   (map slurp 
        (filter (fn [d] (not (directory? d))) docs)))
@@ -35,7 +40,7 @@
 ;; 1 (you will see what it is being used for)
 (defn tokenize
   ([txt] (tokenize txt :space))
-  ([txt delimiter] (split txt (delim delimiter))))
+  ([txt delimiter] (str/split txt (delim delimiter))))
 
 ;; builds a frequency count
 ;; of words appearing in a string
@@ -65,3 +70,24 @@
     (vec (for [i (vec-range tokens)] 
       (vec (for [j (range n)]
         (nth tokens (+ i j) "")))))))
+
+;; cleans the docs and calculates weighted
+;; term frequencies for each doc
+(defn calc-tf [docs]
+  (map weighted 
+       (map clean-text 
+            docs)))
+
+;; calculates the inverse term frequencies
+;; for all terms in all docs
+(defn calc-idf [weights]
+  (map
+   (fn [doc] 
+     (reduce-kv
+      (fn [m k v]
+        (assoc m k (/
+                    (count (filter (fn [d] (get d k)) weights))
+                    (count weights))))
+      {} doc)) 
+   weights))
+
