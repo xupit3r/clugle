@@ -20,15 +20,7 @@
               :klass))
 
 ;; functions declared in this file
-(declare print-table columns-new nump ignorep klass-idx mdata)
-
-;; prints the table contents
-;; NOTE: this attempts to print 
-;; the whole table (regardless 
-;; of size)
-(defn print-table [tbl]
-  (clojure.pprint/pprint tbl))
-
+(declare  columns-new nump ignorep klass-idx mdata)
 
 ;; TABLE COMPONENT FUNCTIONS ;;
 

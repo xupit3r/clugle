@@ -1,6 +1,6 @@
 (ns clugle.test.table
-  (:require [clugle.learn.data.table :as table])
-  (:use [clojure.test]))
+  (:require [clojure.test :refer [deftest is]]
+            [clugle.learn.data.table :as table]))
 
 ;; test data for the below test cases
 (def TEST_DATA {:name "weather"
