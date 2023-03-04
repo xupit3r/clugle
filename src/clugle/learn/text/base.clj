@@ -1,5 +1,6 @@
 (ns clugle.learn.text.base
   (:require [clojure.string :as str]
+            [clojure.math :as math]
             [clojure.java.io :refer [file]]
             [babashka.fs :refer [directory?]]
             [clugle.util.hlpr :refer [maxv apply-mf vec-range]]))
@@ -73,21 +74,34 @@
 
 ;; cleans the docs and calculates weighted
 ;; term frequencies for each doc
-(defn calc-tf [docs]
+(defn doc-weights [docs]
   (map weighted 
        (map clean-text 
             docs)))
 
-;; calculates the inverse term frequencies
-;; for all terms in all docs
-(defn calc-idf [weights]
-  (map
-   (fn [doc] 
-     (reduce-kv
-      (fn [m k v]
-        (assoc m k (/
-                    (count (filter (fn [d] (get d k)) weights))
-                    (count weights))))
-      {} doc)) 
-   weights))
+;; docs that contain a specified term
+(defn docs-with [docs term]
+  (filter (fn [d] (get d term)) docs))
 
+;; returns a function that will calculate
+;; the tfidf for a token on a given a doc
+(defn calc-tfidf [token weights]
+   (fn [doc]
+     (let [token-docs (docs-with weights token)]
+       (if (empty? token-docs)
+         0
+         (* (get doc token 0)
+            (math/log10
+             (/
+              (count weights)
+              (count token-docs))))))))
+
+;; run tfidf on a term and set of docs
+(defn tfidf [term docs]
+  (let [weights (doc-weights docs)
+        tokens (tokenize term)]
+    (apply merge (for [token tokens]
+           {(keyword token)
+            (vec (map 
+                  (calc-tfidf token weights) 
+                  weights))}))))
