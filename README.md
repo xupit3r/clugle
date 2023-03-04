@@ -1,10 +1,12 @@
 # clugle
 
-Some general learning stuff and other tools.
+some general learning stuff and other tools:
 
-## Usage
+1. text based things: ngrams, tfidf, and more to come
+2. web-y things: grab page, process it, select tags...blah blah
+3. api server: exposes these functions n'at
 
-FIXME: usage
+more to come. this is just a little playground for having fun with clojure and learning stuffs. focus will be mainly on text processing, but other stuff may make its way in here, too.
 
 ## License
 
