@@ -6,6 +6,10 @@
 (defn sum [lst]
   (apply + lst))
 
+;; combines two or many lists
+(defn join [lst1 & args]
+  (apply conj lst1 (flatten args)))
+
 ;; finds the max value
 (defn maxv [lst]
   (apply max lst))
