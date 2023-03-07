@@ -1,6 +1,6 @@
 (ns clugle.test.maxtrix
   (:require [clojure.test :refer [deftest is]]
-            [clugle.learn.matrix.base :refer [do-matrix-ops]]))
+            [clugle.learn.matrix.base :refer [do-matrix-ops convolution]]))
 
 (deftest test-do-matrix-ops []
   (is (= 
@@ -8,3 +8,11 @@
          [[1 0 0] [0 1 0] [0 0 1]] 
          [[1 2 3] [4 5 6]])
        [[1 2 3] [4 5 6]])))
+
+
+(deftest test-convolution []
+  (let [window [3 2 1]
+        input  [1 2 3 4 5]]
+    (is (=
+         (convolution window input)
+         [3 8 14 20 26 14 5]))))
