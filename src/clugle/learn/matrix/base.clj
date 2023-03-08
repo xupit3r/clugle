@@ -63,3 +63,17 @@
    (reverse 
     (map (fn [k] (vec (reverse k))) 
          kernel))))
+
+;; creates a version of the kernel slid to 
+;; the supplied origin (i, j). values will
+;; be padded with zeros and the resulting
+;; kernel will be the same dimensions as
+;; the original kernel
+(defn slidek [kernel i j]
+  (let [cm (int (/ (count (kernel 0)) 2))
+        cn (int (/ (count kernel) 2))
+        dm (- cm i)
+        dn (- cn j)]
+    (vec (for [m (range (count kernel))]
+      (vec (for [n (range (count (kernel m)))]
+        (get (get kernel (+ m dm) []) (+ n dn) 0)))))))
