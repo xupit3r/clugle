@@ -68,12 +68,20 @@
 ;; the supplied origin (i, j). values will
 ;; be padded with zeros and the resulting
 ;; kernel will be the same dimensions as
-;; the original kernel
-(defn slidek [kernel i j]
+;; the input
+(defn slidek [kernel input i j]
   (let [cm (int (/ (count (kernel 0)) 2))
         cn (int (/ (count kernel) 2))
         dm (- cm i)
         dn (- cn j)]
-    (vec (for [m (range (count kernel))]
-      (vec (for [n (range (count (kernel m)))]
+    (vec (for [m (range (count input))]
+      (vec (for [n (range (count (input m)))]
         (get (get kernel (+ m dm) []) (+ n dn) 0)))))))
+
+;; apply a 2d convolution (very dumb implementation)
+(defn conv2d [kernel input]
+  (let [fk (flipk kernel)
+        fi (flatten input)]
+    (vec (for [i (range (count input))]
+      (vec (for [j (range (count (input i)))]
+        (apply + (mapv * fi (flatten (slidek fk input i j))))))))))
