@@ -56,3 +56,10 @@
          (for [i (range 1 iterations)
                :let [op (conv-op window i iterations)]]
            (apply + (mapv * op ivec))))))
+
+;; flips a 2d kernel
+(defn flipk [kernel]
+  (vec 
+   (reverse 
+    (map (fn [k] (vec (reverse k))) 
+         kernel))))
