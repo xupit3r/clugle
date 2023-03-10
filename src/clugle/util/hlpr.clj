@@ -6,6 +6,10 @@
 (defn sum [lst]
   (apply + lst))
 
+;; multiplies a supplied set of vectors
+(defn mul [& vecs]
+  (apply mapv * vecs))
+
 ;; combines two or many lists
 (defn join [lst1 & args]
   (apply conj lst1 (flatten args)))
@@ -29,3 +33,6 @@
 (defn vec-range [vec]
   (range (- (count vec) 1)))
 
+;; pulls a column from a matrix (vector x vector)
+(defn column [matrix cnum]
+  (mapv (fn [m] (m cnum)) matrix))

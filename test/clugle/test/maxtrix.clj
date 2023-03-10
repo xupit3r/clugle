@@ -1,6 +1,6 @@
 (ns clugle.test.maxtrix
   (:require [clojure.test :refer [deftest is]]
-            [clugle.learn.matrix.base :refer [do-matrix-ops m-add]]))
+            [clugle.learn.matrix.base :refer [do-matrix-ops m-add m-mul]]))
 
 (deftest test-do-matrix-ops []
   (is (=
@@ -16,3 +16,10 @@
         [[2 -1] [-1 2]]
         [[1 1] [1 1]])
        [[4 2] [3 7]])))
+
+(deftest test-m-mul []
+  (is (=
+       (m-mul
+        [[2 -1] [1 3]]
+        [[1 2] [3 4]])
+       [[-1 0] [10 14]])))

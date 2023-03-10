@@ -1,5 +1,5 @@
 (ns clugle.learn.matrix.base
-  (:require [clugle.util.hlpr :refer [sum join]]))
+  (:require [clugle.util.hlpr :refer [sum mul join column]]))
 
 ;; returns a function that will apply a
 ;; matrix operation to the supplied input
@@ -31,3 +31,11 @@
         (for [j (range y)]
           (apply + (mapv (fn [m] ((m i) j))
                          matrices))))))))
+
+;; multiplies 2 matrices
+(defn m-mul [m1 m2]
+  (vec
+   (for [i (range (count m1))]
+     (vec
+      (for [j (range (count (m1 i)))]
+        (sum (mul (m1 i) (column m2 j))))))))
