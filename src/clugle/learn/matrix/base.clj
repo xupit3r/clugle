@@ -20,3 +20,14 @@
    (fn [input]
      (mapv (apply-op input) ops))
    inputs))
+
+;; adds a bunch of matrices (assumes same length)
+(defn m-add [& matrices]
+  (let [x (count (first matrices))
+        y (count ((first matrices) 0))]
+    (vec
+     (for [i (range x)]
+       (vec
+        (for [j (range y)]
+          (apply + (mapv (fn [m] ((m i) j))
+                         matrices))))))))
