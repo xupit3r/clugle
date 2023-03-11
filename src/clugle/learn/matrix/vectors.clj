@@ -6,3 +6,7 @@
    (apply + (mapv
              (fn [v] (Math/pow v 2))
              vector))))
+
+;; add two vectors together
+(defn vec-add [v1 v2]
+  (mapv + v1 v2))
