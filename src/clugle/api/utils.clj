@@ -1,5 +1,5 @@
 (ns clugle.api.utils
-  (:require [cheshire.core :refer [generate-string]]))
+  (:require [cheshire.core :refer [encode]]))
 
 (defn extract-params [params req]
   (map (fn [key] 
@@ -11,4 +11,4 @@
     (let [resp (apply fun (extract-params params req))]
       {:status  200
        :headers {"Content-Type" "text/json"}
-       :body  (generate-string resp)})))
+       :body  (encode resp)})))
