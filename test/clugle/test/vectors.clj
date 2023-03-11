@@ -1,6 +1,6 @@
 (ns clugle.test.vectors
   (:require [clojure.test :refer [deftest is]]
-            [clugle.learn.matrix.vectors :refer [vec-length vec-add]]))
+            [clugle.learn.matrix.vectors :refer [vec-length vec-add vec-scale]]))
 
 (deftest test-vec-length []
   (is (= (vec-length [2 -5 4 7])
@@ -12,4 +12,9 @@
 
 (deftest test-vec-add []
   (is (= (vec-add [1 3 -1] [-2 1 6])
-         [-1 4 6])))
+         [-1 4 5])))
+
+(deftest test-vec-scale []
+  (is (= (vec-scale 7 [1 0 -2 1])
+         [7 0 -14 7])))
+
