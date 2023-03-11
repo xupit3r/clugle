@@ -15,3 +15,7 @@
 ;; scalar value
 (defn vec-scale [scale vec]
   (mapv (fn [v] (* scale v)) vec))
+
+;; dot product of two vectors
+(defn vec-dot [v1 v2]
+  (apply + (mapv * v1 v2)))
