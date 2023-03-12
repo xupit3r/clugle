@@ -2,7 +2,7 @@
   (:require [clojure.test
              :refer [deftest is]]
             [clugle.learn.matrix.vectors
-             :refer [vec-length vec-add vec-scale vec-dot]]))
+             :refer [vec-length vec-add vec-scale vec-dot vec-cross]]))
 
 (deftest test-vec-length []
   (is (= (vec-length [2 -5 4 7])
@@ -22,3 +22,9 @@
 
 (deftest test-vec-dot []
   (is (= (vec-dot [12 20] [16 -5]) 92)))
+
+(deftest test-vec-cross []
+  (is (= (vec-cross
+          [(/ 1 4) (- (/ 1 2)) 1]
+          [(/ 1 3) 1 (- (/ 2 3))])
+         [-2/3 1/2 5/12])))

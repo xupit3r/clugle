@@ -36,3 +36,7 @@
 ;; pulls a column from a matrix (vector x vector)
 (defn column [matrix cnum]
   (mapv (fn [m] (m cnum)) matrix))
+
+;; performs a shallow flatten on a vector
+(defn flatme [v1]
+  (vec (apply concat v1)))
