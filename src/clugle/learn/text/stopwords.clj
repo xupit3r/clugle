@@ -11,6 +11,19 @@
 (def load-stops 
   (memoize
    (fn [source]
-     (mapv str/trim
-           (str/split-lines
-            (slurp (SOURCES source)))))))
+     (set
+      (mapv str/trim
+            (str/split-lines
+             (slurp (SOURCES source))))))))
+
+;; provides a function that will return
+;; true if the supplied word is a stop word
+(defn stop-filter [source]
+  (let [stopwords (load-stops source)]
+    (fn [word] (not (contains? stopwords word)))))
+
+;; for a given token vector this removes any
+;; stopwords that are present
+(defn remove-stops 
+  ([tokens] (remove-stops tokens :english))
+  ([tokens source] (filterv (stop-filter source) tokens)))
