@@ -1,4 +1,4 @@
-(ns clugle.learn.text.stopwords
+(ns clugle.learn.text.preprocess
   (:require [clojure.string :as str]))
 
 ;; stop words sources (just english right now)

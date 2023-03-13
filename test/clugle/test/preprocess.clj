@@ -1,7 +1,7 @@
-(ns clugle.test.stopwords
+(ns clugle.test.preprocess
   (:require [clojure.test :refer [deftest is]]
             [clugle.learn.text.utils :refer [tokenize]]
-            [clugle.learn.text.stopwords :refer [remove-stops]]))
+            [clugle.learn.text.preprocess :refer [remove-stops]]))
 
 (deftest test-remove-stops []
   (is (= (-> "the sentence is this, i am removing stopwords, bruh"
