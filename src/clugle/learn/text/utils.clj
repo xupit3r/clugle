@@ -31,10 +31,8 @@
 (defn load-docs [dir]
   (-> dir file file-seq doc-arr vec))
 
-;; creates a vector of tuples 
-;; the first of each tuple is the 
-;; token, the second is a talley of 
-;; 1 (you will see what it is being used for)
+;; creates a vector of the words that
+;; comprise the supplied string
 (defn tokenize
   ([txt] (tokenize txt :space))
   ([txt delimiter] (str/split txt (delim delimiter))))
