@@ -1,7 +1,8 @@
 (ns clugle.test.preprocess
   (:require [clojure.test :refer [deftest is]]
             [clugle.learn.text.preprocess :refer [denoise remove-punc
-                                                  remove-stops tokenize]]))
+                                                  remove-stops remove-whitespace
+                                                  tokenize]]))
 
 (def expected-tokens ["joe" "is" "joe"])
 
@@ -44,6 +45,12 @@
   (is (= (remove-punc
           "joe is typing this, now, and it has puncuation.")
          "joe is typing this now and it has puncuation")))
+
+(deftest test-remove-whitespace []
+  (is (= (-> "joe   is     typing    this"
+             tokenize
+             remove-whitespace)
+         ["joe" "is" "typing" "this"])))
 
 (deftest test-denoise []
   (is (= (denoise "Joe, Are YOU tyPing this?")

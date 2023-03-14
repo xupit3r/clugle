@@ -49,6 +49,11 @@
   ([tokens] (remove-stops tokens :english))
   ([tokens source] (filterv (stop-filter source) tokens)))
 
+;; removes any preceeding/trailing whitespace
+;; from each of the tokens
+(defn remove-whitespace [tokens]
+  (mapv str/trim tokens))
+
 ;; removes puncuation present in the text
 (defn remove-punc [txt]
   (str/replace txt PUNCUATION ""))
@@ -59,4 +64,5 @@
       remove-punc
       str/lower-case
       tokenize
-      remove-stops))
+      remove-stops
+      remove-whitespace))
