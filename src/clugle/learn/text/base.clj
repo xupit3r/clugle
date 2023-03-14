@@ -1,7 +1,7 @@
 (ns clugle.learn.text.base
   (:require [clojure.math :as math]
             [clugle.util.hlpr :refer [maxv apply-mf vec-range]]
-            [clugle.learn.text.utils :refer [clean-text tokenize]]))
+            [clugle.learn.text.preprocess :refer [remove-punc tokenize]]))
 
 
 ;; builds a frequency count
@@ -37,7 +37,7 @@
 ;; term frequencies for each doc
 (defn doc-weights [docs]
   (map weighted 
-       (map clean-text 
+       (map remove-punc
             docs)))
 
 ;; docs that contain a specified term

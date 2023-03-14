@@ -8,6 +8,23 @@
 ;; from text
 (def PUNCUATION #"[.,?!;:]")
 
+;; return a string representing 
+;; the desired delimiter
+(defn delim [dkey]
+  (cond (= dkey :space) #"\s"
+        (= dkey :pipe) #"\|"
+        (= dkey :pound) #"#"
+        (= dkey :percent) #"%"
+        (= dkey :tab) #"\t"
+        (= dkey :caret) #"\^"
+        (= dkey :period) #"\."
+        (= dkey :comma) #","))
+;; creates a vector of the words that
+;; comprise the supplied string
+(defn tokenize
+  ([txt] (tokenize txt :space))
+  ([txt delimiter] (str/split txt (delim delimiter))))
+
 ;; loads the stop words for a specified source
 ;; note: this function is memoized so subsequent
 ;; calls with the same source will not result in
@@ -35,3 +52,10 @@
 ;; removes puncuation present in the text
 (defn remove-punc [txt]
   (str/replace txt PUNCUATION ""))
+
+;; performs some text denoising
+(defn denoise [txt]
+  (-> txt
+      remove-punc
+      tokenize
+      remove-stops))

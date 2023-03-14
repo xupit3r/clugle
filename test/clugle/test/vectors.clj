@@ -6,10 +6,6 @@
 
 (deftest test-vec-length []
   (is (= (vec-length [2 -5 4 7])
-         6.708203932499369)))
-
-(deftest test-vec-length []
-  (is (= (vec-length [2 -5 4 7])
          9.695359714832659)))
 
 (deftest test-vec-add []
