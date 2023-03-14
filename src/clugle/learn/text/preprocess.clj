@@ -3,6 +3,9 @@
 
 ;; stop words sources (just english right now)
 (def SOURCES {:english "src/clugle/learn/text/stopwords/english.txt"})
+
+;; puncuation regex, will be used to strip these symbols
+;; from text
 (def PUNCUATION #"[.,?!;:]")
 
 ;; loads the stop words for a specified source
