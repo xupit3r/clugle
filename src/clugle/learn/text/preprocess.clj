@@ -3,6 +3,7 @@
 
 ;; stop words sources (just english right now)
 (def SOURCES {:english "src/clugle/learn/text/stopwords/english.txt"})
+(def PUNCUATION #"[.,?!;:]")
 
 ;; loads the stop words for a specified source
 ;; note: this function is memoized so subsequent
@@ -27,3 +28,7 @@
 (defn remove-stops 
   ([tokens] (remove-stops tokens :english))
   ([tokens source] (filterv (stop-filter source) tokens)))
+
+;; removes puncuation present in the text
+(defn remove-punc [txt]
+  (str/replace txt PUNCUATION ""))
