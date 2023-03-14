@@ -57,5 +57,6 @@
 (defn denoise [txt]
   (-> txt
       remove-punc
+      str/lower-case
       tokenize
       remove-stops))

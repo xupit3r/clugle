@@ -46,5 +46,5 @@
          "joe is typing this now and it has puncuation")))
 
 (deftest test-denoise []
-  (is (= (denoise "joe, are you typing this?")
+  (is (= (denoise "Joe, Are YOU tyPing this?")
          ["joe" "typing"])))
