@@ -54,4 +54,4 @@
 
 (deftest test-denoise []
   (is (= (denoise "Joe, Are YOU tyPing this?")
-         ["joe" "typing"])))
+         ["joe" "type"])))
