@@ -28,23 +28,23 @@
   ([txt] (tokenize txt :space))
   ([txt delimiter] (str/split txt (delim delimiter))))
 
+;; reads all non-comment lines from a file
+;; i.e. core data of the file :)
+(defn get-data-lines [file]
+  (filter (fn [line] (not (str/starts-with? line ";")))
+          (str/split-lines (slurp file))))
+
 ;; loads the stop words for a specified source
 ;; note: this function is memoized so subsequent
 ;; calls with the same source will not result in
 ;; re-excution
-(def get-stops 
+(def get-stops
   (memoize
    (fn [source]
      (set
       (mapv str/trim
             (str/split-lines
              (slurp (STOP_SOURCES source))))))))
-
-;; reads the core lemma definitions in
-;; (removing any comment lines or other markup)
-(defn get-core-lemma [source]
-  (filter (fn [line] (not (str/starts-with? line ";")))
-          (str/split-lines (slurp (LEMMA_SOURCES source)))))
 
 ;; processes a line from the lemma file
 (defn process-lemma-line [line]
@@ -62,7 +62,8 @@
 (def get-lemma
   (memoize
    (fn [source]
-     (->> (get-core-lemma source)
+     (->> (LEMMA_SOURCES source)
+          (get-data-lines)
           (mapv process-lemma-line)
           (apply merge)))))
 
@@ -90,14 +91,14 @@
 
 ;; for a given token vector this removes any
 ;; stopwords that are present
-(defn remove-stops 
+(defn remove-stops
   ([tokens] (remove-stops tokens :english))
   ([tokens source] (filterv (stop-filter source) tokens)))
 
 ;; removes any preceeding/trailing whitespace
 ;; from each of the tokens
 (defn remove-whitespace [tokens]
-  (filter (fn [s] (not (str/blank? s))) 
+  (filter (fn [s] (not (str/blank? s)))
           (mapv str/trim tokens)))
 
 ;; removes puncuation present in the text
