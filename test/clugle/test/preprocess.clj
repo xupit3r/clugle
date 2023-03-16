@@ -53,5 +53,5 @@
          ["joe" "is" "typing" "this"])))
 
 (deftest test-denoise []
-  (is (= (denoise "Joe, Are YOU tyPing this?")
-         ["joe" "type"])))
+  (is (= (denoise "Joe, Are YOU tyPing this n'at?")
+         ["joe" "type" "and that"])))

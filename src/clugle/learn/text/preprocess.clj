@@ -7,6 +7,9 @@
 ;; lemma sources (unprocessed)
 (def LEMMA_SOURCES {:english "src/clugle/learn/text/lemma/english/lemma.en.txt"})
 
+;; contractions source
+(def CONTRACTION_SOURCES {:english "src/clugle/learn/text/contractions/english.txt"})
+
 ;; puncuation regex, will be used to strip these symbols
 ;; from text
 (def PUNCUATION #"[.,?!;:]")
@@ -22,6 +25,7 @@
         (= dkey :caret) #"\^"
         (= dkey :period) #"\."
         (= dkey :comma) #","))
+
 ;; creates a vector of the words that
 ;; comprise the supplied string
 (defn tokenize
@@ -33,6 +37,32 @@
 (defn get-data-lines [file]
   (filter (fn [line] (not (str/starts-with? line ";")))
           (str/split-lines (slurp file))))
+
+;; prepares a line from the contractions
+;; file to be part of the mapping
+(defn process-contraction-line [line]
+  (let [[word subs] (str/split line #",")]
+    {(str/trim word) 
+     (mapv str/trim (str/split subs #"\|"))}))
+
+;; retrieves contraction mappings from a specified
+;; source file. this function is memoized, so the
+;; source file data will only be processed once
+(def get-contractions
+  (memoize
+   (fn [source]
+     (->> (CONTRACTION_SOURCES source)
+          (get-data-lines)
+          (mapv process-contraction-line)
+          (apply merge)))))
+
+;; provides a function that will return the relevant
+;; contraction (if it exists) otherwise the token
+;; provided is returned
+(defn contraction-expander [source]
+  (let [contractions (get-contractions source)]
+    (fn [token] 
+      (first (get contractions token [token])))))
 
 ;; loads the stop words for a specified source
 ;; note: this function is memoized so subsequent
@@ -80,8 +110,13 @@
 ;; if no normal form is found, the token will be
 ;; returned
 (defn normalize
-  ([tokens] (normalize tokens :english))
-  ([tokens source] (mapv (lemma-mapper source) tokens)))
+  ([tokens] 
+   (normalize tokens :english))
+  ([tokens source] 
+   (->>
+    tokens
+    (mapv (contraction-expander source))
+    (mapv (lemma-mapper source)))))
 
 ;; provides a function that will return
 ;; true if the supplied word is a stop word
