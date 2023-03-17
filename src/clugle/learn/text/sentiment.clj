@@ -25,3 +25,13 @@
           (get-data-lines)
           (mapv process-sentiment-line)
           (apply merge)))))
+
+;; given a set of tokens this will provide a sum
+;; of the overall sentiment within the supplied
+;; tokens.
+(defn sentiment-sum
+  ([tokens]
+   (sentiment-sum tokens :english))
+  ([tokens source]
+   (let [smap (get-sentiment source)]
+     (apply + (mapv (fn [t] (get smap t 0)) tokens)))))
