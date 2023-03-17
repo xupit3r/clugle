@@ -1,5 +1,6 @@
 (ns clugle.learn.text.preprocess
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clugle.learn.text.utils :refer [get-data-lines]]))
 
 ;; stop words sources (just english right now)
 (def STOP_SOURCES {:english "src/clugle/learn/text/stopwords/english.txt"})
@@ -31,12 +32,6 @@
 (defn tokenize
   ([txt] (tokenize txt :space))
   ([txt delimiter] (str/split txt (delim delimiter))))
-
-;; reads all non-comment lines from a file
-;; i.e. core data of the file :)
-(defn get-data-lines [file]
-  (filter (fn [line] (not (str/starts-with? line ";")))
-          (str/split-lines (slurp file))))
 
 ;; prepares a line from the contractions
 ;; file to be part of the mapping

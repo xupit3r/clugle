@@ -1,5 +1,6 @@
 (ns clugle.learn.text.utils
    (:require [clojure.java.io :refer [file]]
+             [clojure.string :as str]
              [babashka.fs :refer [directory?]]))
 
 ;; reads files into a list of strings
@@ -13,3 +14,9 @@
 ;; umm don't use this probably :)
 (defn load-docs [dir]
   (-> dir file file-seq doc-arr vec))
+
+;; reads all non-comment lines from a file
+;; i.e. core data of the file :)
+(defn get-data-lines [file]
+  (filter (fn [line] (not (str/starts-with? line ";")))
+          (str/split-lines (slurp file))))
