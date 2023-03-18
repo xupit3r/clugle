@@ -45,11 +45,10 @@
 ;; source file data will only be processed once
 (def get-contractions
   (memoize
-   (fn [source]
-     (->> (CONTRACTION_SOURCES source)
-          (get-data-lines)
-          (mapv process-contraction-line)
-          (apply merge)))))
+   #(->> (CONTRACTION_SOURCES %1)
+         (get-data-lines)
+         (mapv process-contraction-line)
+         (apply merge))))
 
 ;; provides a function that will return the relevant
 ;; contraction (if it exists) otherwise the token
@@ -65,18 +64,17 @@
 ;; re-excution
 (def get-stops
   (memoize
-   (fn [source]
-     (set
-      (mapv str/trim
-            (str/split-lines
-             (slurp (STOP_SOURCES source))))))))
+   #(set
+     (mapv str/trim
+           (str/split-lines
+            (slurp (STOP_SOURCES %1)))))))
 
 ;; processes a line from the lemma file
 (defn process-lemma-line [line]
   (let [[base forms] (str/split line #"->")
         norm-form (str/trim (first (str/split base #"/")))]
     (reduce
-     (fn [m v] (assoc m (str/trim v) norm-form))
+     #(assoc %1 (str/trim %2) norm-form)
      {}
      (str/split forms #","))))
 
@@ -86,11 +84,10 @@
 ;; once per source
 (def get-lemma
   (memoize
-   (fn [source]
-     (->> (LEMMA_SOURCES source)
-          (get-data-lines)
-          (mapv process-lemma-line)
-          (apply merge)))))
+   #(->> (LEMMA_SOURCES %1)
+        (get-data-lines)
+        (mapv process-lemma-line)
+        (apply merge))))
 
 
 ;; provides a function that will map 
@@ -98,13 +95,13 @@
 ;; based on lemma mappings
 (defn lemma-mapper [source]
   (let [lemmas (get-lemma source)]
-    (fn [token] (get lemmas token token))))
+    #(get lemmas %1 %1)))
 
 ;; provides a function that will return
 ;; true if the supplied word is a stop word
 (defn stop-filter [source]
   (let [stopwords (get-stops source)]
-    (fn [word] (not (contains? stopwords word)))))
+    #(not (contains? stopwords %1))))
 
 ;; for a given token vector this removes any
 ;; stopwords that are present
@@ -115,7 +112,7 @@
 ;; removes any preceeding/trailing whitespace
 ;; from each of the tokens
 (defn remove-whitespace [tokens]
-  (filter (fn [s] (not (str/blank? s)))
+  (filter #(not (str/blank? %1))
           (mapv str/trim tokens)))
 
 ;; removes puncuation present in the text

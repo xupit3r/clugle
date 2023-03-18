@@ -21,8 +21,7 @@
         maxf (-> freqs vals maxv)]
     (apply-mf
      freqs
-     (fn [v]
-       (+ 0.5 (* 0.5 (/ v maxf)))))))
+     #(+ 0.5 (* 0.5 (/ %1 maxf))))))
 
 ;; build ngrams for a given string
 ;; return is a vector of vectors, where
@@ -44,20 +43,19 @@
 
 ;; docs that contain a specified term
 (defn docs-with [docs term]
-  (filter (fn [d] (get d term)) docs))
+  (filter #(get %1 term) docs))
 
 ;; returns a function that will calculate
 ;; the tfidf for a token on a given a doc
 (defn calc-tfidf [token weights]
-   (fn [doc]
-     (let [token-docs (docs-with weights token)]
-       (if (empty? token-docs)
-         0
-         (* (get doc token 0)
-            (math/log10
-             (/
-              (count weights)
-              (count token-docs))))))))
+  #(let [token-docs (docs-with weights token)]
+    (if (empty? token-docs)
+      0
+      (* (get %1 token 0)
+         (math/log10
+          (/
+           (count weights)
+           (count token-docs)))))))
 
 ;; run tfidf on a term and set of docs
 (defn tfidf [term docs]
