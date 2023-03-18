@@ -1,5 +1,6 @@
 (ns clugle.learn.text.sentiment
   (:require [clojure.string :as str]
+            [clugle.util.hlpr :refer [sum]]
             [clugle.learn.text.utils :refer [get-data-lines]]))
 
 ;; sentiment mapping file
@@ -26,12 +27,22 @@
           (mapv process-sentiment-line)
           (apply merge)))))
 
-;; given a set of tokens this will provide a sum
-;; of the overall sentiment within the supplied
-;; tokens.
-(defn sentiment-sum
-  ([tokens]
-   (sentiment-sum tokens :english))
+;; given a set of tokens and valence mappings,
+;; this will calculate the overall sum of 
+;; sentiment scores within the tokens
+(defn sentiment-sum [tokens valences]
+  (sum 
+   (mapv 
+    (fn [t] (get valences t 0)) 
+    tokens)))
+
+;; returns a simple lexicon based score for the 
+;; sentiment. this based purely off of a dictionary
+;; of words mapped to positivity/negativity
+;; valences
+(defn lexicon-score
+  ([tokens] (lexicon-score tokens :english))
   ([tokens source]
-   (let [smap (get-sentiment source)]
-     (apply + (mapv (fn [t] (get smap t 0)) tokens)))))
+   (let [valences (get-sentiment source)]
+     (/ (sentiment-sum tokens valences) 
+        (count tokens)))))
