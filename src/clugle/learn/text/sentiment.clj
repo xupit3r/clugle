@@ -46,9 +46,9 @@
 (defn lexicon-score
   ([tokens] (lexicon-score tokens :english))
   ([tokens source]
-   (let [valences (get-sentiment source)
-         scores (assign-scores tokens valences)
-         scale (sentiment-scale scores)]
-     (* scale
-        (/ (sum scores)
-           (count tokens))))))
+   (let [scores (->>
+                 source
+                 (get-sentiment)
+                 (assign-scores tokens))]
+     (* (sentiment-scale scores) 
+        (sum scores)))))

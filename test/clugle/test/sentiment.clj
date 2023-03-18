@@ -12,5 +12,5 @@
   (is (= (valences "resign") -1)))
 
 (deftest test-lexicon-score []
-  (is (= (lexicon-score positive) (* (/ 1 3) (/ 1 8))))
-  (is (= (lexicon-score negative) (* (/ 1 3) (/ -3 4)))))
+  (is (= (lexicon-score positive) (/ 1 3)))
+  (is (= (lexicon-score negative) -1)))
