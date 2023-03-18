@@ -1,7 +1,9 @@
 (ns clugle.learn.text.base
   (:require [clojure.math :as math]
-            [clugle.util.hlpr :refer [maxv apply-mf vec-range]]
-            [clugle.learn.text.preprocess :refer [remove-punc tokenize]]))
+            [clugle.learn.text.preprocess :refer [normalize remove-punc
+                                                  tokenize]]
+            [clugle.learn.text.sentiment :refer [lexicon-score]]
+            [clugle.util.hlpr :refer [apply-mf maxv vec-range]]))
 
 
 ;; builds a frequency count
@@ -66,3 +68,10 @@
             (vec (map 
                   (calc-tfidf token weights) 
                   weights))}))))
+
+;; performs a sentiment calculation on the 
+;; provided string
+(defn score-sentiment [str]
+  (-> str
+      normalize
+      lexicon-score))
