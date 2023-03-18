@@ -100,19 +100,6 @@
   (let [lemmas (get-lemma source)]
     (fn [token] (get lemmas token token))))
 
-;; will normalize all tokens in the given text
-;; (at this point just maps em to the normal form)
-;; if no normal form is found, the token will be
-;; returned
-(defn normalize
-  ([tokens] 
-   (normalize tokens :english))
-  ([tokens source] 
-   (->>
-    tokens
-    (mapv (contraction-expander source))
-    (mapv (lemma-mapper source)))))
-
 ;; provides a function that will return
 ;; true if the supplied word is a stop word
 (defn stop-filter [source]
@@ -135,12 +122,19 @@
 (defn remove-punc [txt]
   (str/replace txt PUNCUATION ""))
 
-;; performs some text denoising
-(defn denoise [txt]
-  (-> txt
-      remove-punc
-      str/lower-case
-      tokenize
-      remove-whitespace
-      remove-stops
-      normalize))
+;; will normalize all tokens in the given text
+;; (at this point just maps em to the normal form)
+;; if no normal form is found, the token will be
+;; returned
+(defn normalize
+  ([str]
+   (normalize str :english))
+  ([str source]
+   (->>
+    str
+    str/lower-case
+    remove-punc
+    tokenize
+    remove-whitespace
+    (mapv (contraction-expander source))
+    (mapv (lemma-mapper source)))))
