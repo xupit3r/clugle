@@ -20,20 +20,17 @@
 ;; a map of words to sentiment scores
 (def get-sentiment
   (memoize
-   (fn [source]
-     (->> source
-          (SENTIMENT_MAPPINGS)
-          (get-data-lines)
-          (mapv process-sentiment-line)
-          (apply merge)))))
+   #(->> %1
+         (SENTIMENT_MAPPINGS)
+         (get-data-lines)
+         (mapv process-sentiment-line)
+         (apply merge))))
 
 ;; assigns a score to each token in the
 ;; tokens vector. if a token is neutral,
 ;; 0 is assigned.
 (defn assign-scores [tokens valences]
-  (mapv
-   #(get valences %1 0)
-   tokens))
+  (mapv #(get valences %1 0) tokens))
 
 ;; provides a scale factor of tokens
 ;; contributing to overall sentiment
