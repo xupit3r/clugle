@@ -1,25 +1,28 @@
 (ns clugle.learn.data.datasets
   (:require [clojure.string :as str]))
 
-;; cleans a file (kind of assumes CSV right now...)
-(defn clean-file [str]
-  (str/replace 
-   str 
-   #"(?<=^|,)\"([^\"]*)(?:([\r\n])+([^\"]*))\"(?=,|$)" 
-   "$1$3"))
+;; some file cleaners
+(def CLEANERS
+  {:default #(str/trim %1)
+   :csv #(str/replace
+          %1
+          #"(?<=^|,)\"([^\"]*)(?:([\r\n])+([^\"]*))\"(?=,|$)"
+          "$1 $3")})
 
 ;; reads lines of a file into a vector
-(defn read-lines [file]
-  (-> file
-      slurp
-      clean-file
-      str/split-lines))
+(defn read-lines
+  ([file] (read-lines file :default))
+  ([file cleaner]
+   (-> file
+       slurp
+       ((CLEANERS cleaner))
+       str/split-lines)))
 
 ;; splits the lines of a csv file into
 ;; a vector, one element for each column
 (defn get-csv-lines [file]
   (mapv #(str/split %1 #",")
-        (read-lines file)))
+        (read-lines file :csv)))
 
 ;; uses the header column of a csv file
 ;; to create objects (keyed by header) 
