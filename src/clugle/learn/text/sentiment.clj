@@ -39,6 +39,13 @@
   (/ (count (filterv #(not (zero? %1)) scores))
      (count (filterv zero? scores))))
 
+;; performs the actual calculation of 
+;; the lexicon score, scaling sentiment
+;; contributions to the overall sentiment
+(defn calc-lexicon-score [scores]
+  (* (sentiment-scale scores)
+     (sum scores)))
+
 ;; returns a simple lexicon based score for the 
 ;; sentiment. this based purely off of a dictionary
 ;; of words mapped to positivity/negativity
@@ -46,9 +53,7 @@
 (defn lexicon-score
   ([tokens] (lexicon-score tokens :english))
   ([tokens source]
-   (let [scores (->>
-                 source
-                 (get-sentiment)
-                 (assign-scores tokens))]
-     (* (sentiment-scale scores) 
-        (sum scores)))))
+   (->> source
+        (get-sentiment)
+        (assign-scores tokens)
+        (calc-lexicon-score))))
