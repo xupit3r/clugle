@@ -43,9 +43,18 @@
 ;; performs the actual calculation of 
 ;; the lexicon score, scaling sentiment
 ;; contributions to the overall sentiment
-(defn calc-lexicon-score [scores]
+(defn calc-valence-score [scores]
   (* (sentiment-scale scores)
      (sum scores)))
+
+;; provides a calculation based on frequency counts
+;; of words tagged as positive/negative. the score
+;; is relative to only the total words contributing
+;; to polarity of the sentiment
+(defn calc-freq-score [scores]
+  (-
+   (count (filterv #(> %1 0) scores)) 
+   (count (filterv #(< %1 0) scores))))
 
 ;; returns a simple lexicon based score for the 
 ;; sentiment. this based purely off of a dictionary
@@ -57,4 +66,4 @@
    (->> source
         (get-sentiment)
         (assign-scores tokens)
-        (calc-lexicon-score))))
+        (calc-valence-score))))
