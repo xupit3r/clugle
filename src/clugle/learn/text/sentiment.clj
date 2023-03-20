@@ -36,8 +36,9 @@
 ;; contributing to overall sentiment
 ;; relative to neutral tokens
 (defn sentiment-scale [scores]
-  (/ (count (filterv #(not (zero? %1)) scores))
-     (count (filterv zero? scores))))
+  (let [contributing (count (filterv #(not (zero? %1)) scores))
+        non-contributing (count (filterv zero? scores))]
+    (if (zero? non-contributing) 1 (/ contributing non-contributing))))
 
 ;; performs the actual calculation of 
 ;; the lexicon score, scaling sentiment
