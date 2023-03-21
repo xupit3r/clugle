@@ -4,7 +4,7 @@
             [clugle.learn.text.preprocess :refer [normalize]]
             [clugle.learn.text.sentiment :refer [lexicon-score]]))
 
-(defn get-lexicon-sentiment [{text :text}]
+(defn lexicon-predictor [{text :text}]
   (if (nil? text) nil
       (let [score (-> text normalize lexicon-score)]
         (cond
@@ -14,7 +14,7 @@
 
 (defn lexicon []
   (-> {:dataset (load-dataset :twitter-airline)
-       :predictor get-lexicon-sentiment
-       :skey :airline_sentiment}
+       :predictor lexicon-predictor
+       :actual :airline_sentiment}
       runner
       reporter))
