@@ -1,6 +1,7 @@
 (ns clugle.learn.wordnet.base
   (:require [clojure.string :as str]
-            [clugle.learn.wordnet.parsers :refer [index-parser]]))
+            [clugle.learn.wordnet.parsers :refer [index-parser 
+                                                  data-parser]]))
 
 ;; locations of the index and data files
 (def DICT_LOC "/meatwad/dictionaries/wordnet/wn3.1/dict")
@@ -30,4 +31,4 @@
 ;; speach (e.g. "noun")
 (defn read-data [pos offset]
   (let [reader (line-seeker (format "%s/data.%s" DICT_LOC pos))]
-    (reader offset)))
+    (data-parser (reader offset))))
