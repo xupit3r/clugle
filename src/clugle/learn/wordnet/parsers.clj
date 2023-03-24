@@ -31,7 +31,7 @@
       (groups 2)
       (mapv #(hash-map 
               :word (get % 0) 
-              :lookup (str/join %)))))
+              :index (Integer/parseInt (get % 1))))))
 
 ;; parses the references, creating a hashmap
 ;; with the reference symbol, file offset,
@@ -41,9 +41,9 @@
        (groups 4)
        (mapv #(hash-map
                :symbol (get % 0)
-               :offset (get % 1)
+               :offset (Integer/parseInt (get % 1))
                :pos (get % 2)
-               :target (get % 3)))))
+               :target (Integer/parseInt (get % 3))))))
 
 ;; parses a line from a data file 
 (defn data-parser [line]
