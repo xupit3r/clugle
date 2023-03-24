@@ -18,7 +18,7 @@
     <url>https://github.com/xupit3r/clugle</url>
     <connection>scm:git:git://github.com/xupit3r/clugle.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/xupit3r/clugle.git</developerConnection>
-    <tag>4cf5a06490df4061012cec3c870aae3620643184</tag>
+    <tag>937111205f80c6fda2bd63e6c8af2e5c24eeb953</tag>
   </scm>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -102,6 +102,11 @@
       <groupId>babashka</groupId>
       <artifactId>fs</artifactId>
       <version>0.3.17</version>
+    </dependency>
+    <dependency>
+      <groupId>environ</groupId>
+      <artifactId>environ</artifactId>
+      <version>1.2.0</version>
     </dependency>
   </dependencies>
 </project>

@@ -1,10 +1,16 @@
 (ns clugle.learn.wordnet.base
   (:require [clojure.string :as str]
+            [environ.core :refer [env]]
             [clugle.learn.wordnet.parsers :refer [index-parser 
                                                   data-parser]]))
 
-;; locations of the index and data files
-(def DICT_LOC "/meatwad/dictionaries/wordnet/wn3.1/dict")
+;; some stuff to help load files more easily
+(def wnfile
+  (memoize
+   #(format "%s/%s.%s" (env :wordnet-dict) %1 %2)))
+
+(def index-file #(wnfile "index" %1))
+(def data-file #(wnfile "data" %1))
 
 ;; reads in data lines (i.e. non-comment lines)
 (defn line-reader [file]
@@ -24,11 +30,10 @@
 (defn read-index [pos]
   (map
    index-parser
-   (line-reader
-    (format "%s/index.%s" DICT_LOC pos))))
+   (line-reader (index-file pos))))
 
 ;; reads in the data file for a part of
 ;; speach (e.g. "noun")
 (defn read-data [pos offset]
-  (let [reader (line-seeker (format "%s/data.%s" DICT_LOC pos))]
+  (let [reader (line-seeker (data-file pos))]
     (data-parser (reader offset))))

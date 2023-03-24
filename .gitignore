@@ -62,3 +62,9 @@ scratch
 .lsp
 .nrepl-port
 target
+
+##################
+# local settings #
+##################
+profiles.clj
+.lein-env
