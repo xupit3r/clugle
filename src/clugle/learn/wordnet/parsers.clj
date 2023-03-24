@@ -33,6 +33,9 @@
               :word (get % 0) 
               :lookup (str/join %)))))
 
+;; parses the references, creating a hashmap
+;; with the reference symbol, file offset,
+;; part of speech, and target
 (defn parse-refs [col]
   (->> col
        (groups 4)
