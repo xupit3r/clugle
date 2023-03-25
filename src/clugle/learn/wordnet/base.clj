@@ -12,6 +12,11 @@
 (def index-file #(wnfile "index" %1))
 (def data-file #(wnfile "data" %1))
 
+;; retrieves a db file (e.g. noun.location)
+(def db-file
+  (memoize
+   #(format "%s/dbfiles/%s" (env :wordnet-dict) %1)))
+
 ;; reads in data lines (i.e. non-comment lines)
 (defn line-reader [file]
   (filter #(not (str/starts-with? %1 "  "))
