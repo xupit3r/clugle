@@ -42,3 +42,30 @@
 (defn read-data [pos offset]
   (let [reader (line-seeker (data-file pos))]
     (data-parser (reader offset))))
+
+;; merges the index with the data info
+;; returning a single combined hashmap
+(defn merge-data [pos indices]
+  (for [index indices] 
+    (merge index (read-data pos (:offset index)))))
+
+;; provides some start status
+(defn start [pos]
+  (print (format "processing %ss " pos))
+  pos)
+
+;; summarizes the processing of words
+;; returns the words as a vector
+(defn summarize [pos words]
+  (println (format "processed %d %ss." (count words) pos))
+  (vec words))
+
+;; given a part of speech, this will carry out
+;; the process of reading the index and data
+;; files for the part of speech and combine them
+;; supplying a vector of the words
+(defn process-words [pos]
+  (->> (start pos)
+       (read-index)
+       (merge-data pos)
+       (summarize pos)))

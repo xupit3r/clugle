@@ -18,7 +18,7 @@
     <url>https://github.com/xupit3r/clugle</url>
     <connection>scm:git:git://github.com/xupit3r/clugle.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/xupit3r/clugle.git</developerConnection>
-    <tag>937111205f80c6fda2bd63e6c8af2e5c24eeb953</tag>
+    <tag>86739105a9ae1f388ed01e59a0fae58efb1dc12f</tag>
   </scm>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -107,6 +107,16 @@
       <groupId>environ</groupId>
       <artifactId>environ</artifactId>
       <version>1.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.novemberain</groupId>
+      <artifactId>monger</artifactId>
+      <version>3.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>tlight</groupId>
+      <artifactId>spin</artifactId>
+      <version>0.0.4</version>
     </dependency>
   </dependencies>
 </project>

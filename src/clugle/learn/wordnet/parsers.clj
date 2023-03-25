@@ -1,6 +1,7 @@
 (ns clugle.learn.wordnet.parsers
   (:require [clojure.string :as str]
-            [clugle.learn.wordnet.mappings :refer [lexnames]]))
+            [clugle.learn.wordnet.mappings :refer [lexnames]])
+  (:import [java.util HexFormat]))
 
 ;; parses a line from an index file
 (defn index-parser [line]
@@ -13,7 +14,7 @@
      :ptr_symbol (subvec tokens (if (> p_cnt 0) 4 3) (+ 4 p_cnt))
      :sense_cnt (Integer/parseInt (tokens (+ 4 p_cnt)))
      :tagsense_cnt (Integer/parseInt (tokens (+ 5 p_cnt)))
-     :synset_offset (Integer/parseInt (tokens (+ 6 p_cnt)))}))
+     :offset (Integer/parseInt (tokens (+ 6 p_cnt)))}))
 
 ;; creates groups of size n for a supplied
 ;; collection
@@ -31,7 +32,7 @@
       (groups 2)
       (mapv #(hash-map 
               :word (get % 0) 
-              :index (Integer/parseInt (get % 1))))))
+              :index (HexFormat/fromHexDigits (get % 1))))))
 
 ;; parses the references, creating a hashmap
 ;; with the reference symbol, file offset,
@@ -40,20 +41,21 @@
   (->> col
        (groups 4)
        (mapv #(hash-map
-               :symbol (get % 0)
+               :lemma (get % 0)
                :offset (Integer/parseInt (get % 1))
                :pos (get % 2)
-               :target (Integer/parseInt (get % 3))))))
+               :source (HexFormat/fromHexDigits (subs (get % 3) 0 2))
+               :target (HexFormat/fromHexDigits (subs (get % 3) 2))))))
 
 ;; parses a line from a data file 
 (defn data-parser [line]
   (let [[lex gloss] (str/split line #"\|")
         tokens (str/split (str/trim lex) #" ")
-        w_cnt (Integer/parseInt (tokens 3))
+        w_cnt (HexFormat/fromHexDigits (tokens 3))
         w_pairs (* w_cnt 2)
         p_cnt (Integer/parseInt (tokens (+ 4 w_pairs)))
         p_sets (* p_cnt 4)]
-    {:synset_offset (Integer/parseInt (tokens 0))
+    {:offset (Integer/parseInt (tokens 0))
      :lex_filename (lexnames (tokens 1))
      :pos (tokens 2)
      :words (parse-words
