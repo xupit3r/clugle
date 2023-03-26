@@ -1,6 +1,7 @@
 (ns clugle.learn.wordnet.base
   (:require [clojure.string :as str]
             [environ.core :refer [env]]
+            [clugle.learn.wordnet.db :refer [insert-words]]
             [clugle.learn.wordnet.parsers :refer [index-parser 
                                                   data-parser]]))
 
@@ -62,10 +63,12 @@
 
 ;; given a part of speech, this will carry out
 ;; the process of reading the index and data
-;; files for the part of speech and combine them
-;; supplying a vector of the words
+;; files for the part of speech, combine them,
+;; and then insert them into the "words" database
+;; collection
 (defn process-words [pos]
   (->> (start pos)
        (read-index)
        (merge-data pos)
-       (summarize pos)))
+       (summarize pos)
+       (insert-words)))

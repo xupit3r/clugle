@@ -41,7 +41,7 @@
   (->> col
        (groups 4)
        (mapv #(hash-map
-               :lemma (get % 0)
+               :symbol (get % 0)
                :offset (Integer/parseInt (get % 1))
                :pos (get % 2)
                :source (HexFormat/fromHexDigits (subs (get % 3) 0 2))

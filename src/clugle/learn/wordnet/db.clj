@@ -1,6 +1,6 @@
 (ns clugle.learn.wordnet.db
   (:require [monger.core :as mg]
-            [mongo.collection :as mc])
+            [monger.collection :as mc])
   (:import [org.bson.types ObjectId]))
 
 (def DB_NAME "wordnet")
@@ -13,10 +13,11 @@
 (defn connect-db [name]
   (mg/get-db CONNECTION name))
 
-;; inserts a word document into the "words"
-;; collection
-(defn insert-word [doc]
-  (mc/insert
+;; inserts a collection of words into
+;; the words collection
+(defn insert-words [docs]
+  (mc/insert-batch
    (connect-db DB_NAME)
    (:words COLLECTIONS)
-   (assoc doc :_id (ObjectId.))))
+   (mapv #(assoc % :_id (ObjectId.)) 
+         docs)))
