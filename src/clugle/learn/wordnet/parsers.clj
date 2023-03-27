@@ -67,3 +67,16 @@
                     (if (> p_cnt 0) (+ 5 w_pairs) (+ 4 w_pairs))
                     (+ 5 w_pairs p_sets)))
      :gloss (str/trim gloss)}))
+
+;; parses a line from the sentinet file
+(defn sentinet-parser [line]
+  (let [tokens (str/split line #"\t")
+        positive (Float/parseFloat (tokens 2))
+        negative (Float/parseFloat (tokens 3))]
+    {:pos (tokens 0)
+     :id (tokens 1)
+     :positive positive
+     :negative negative
+     :objective (- 1 (+ positive negative))
+     :word (first (str/split (tokens 4) #"#"))
+     :gloss (tokens 5)}))

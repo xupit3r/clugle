@@ -1,9 +1,11 @@
 (ns clugle.learn.wordnet.base
   (:require [clojure.string :as str]
             [environ.core :refer [env]]
-            [clugle.learn.wordnet.db :refer [insert-words]]
+            [clugle.learn.wordnet.db :refer [insert-words 
+                                             update-sentiment]]
             [clugle.learn.wordnet.parsers :refer [index-parser 
-                                                  data-parser]]))
+                                                  data-parser
+                                                  sentinet-parser]]))
 
 ;; some stuff to help load files more easily
 (def wnfile
@@ -31,6 +33,15 @@
       (.seek file offset)
       (.readLine file))))
 
+;; reads in the sentinet file, removing any
+;; lines that start with "#" (i.e. comments)
+(defn read-sentinet []
+  (map
+   sentinet-parser
+   (filter #(not (str/starts-with? (str/trim %) "#"))
+           (str/split-lines
+            (slurp (env :sentinet-dict))))))
+
 ;; reads in the index file for a part 
 ;; of speech (e.g. "noun")
 (defn read-index [pos]
@@ -50,11 +61,6 @@
   (for [index indices] 
     (merge index (read-data pos (:offset index)))))
 
-;; provides some start status
-(defn start [pos]
-  (print (format "processing %ss " pos))
-  pos)
-
 ;; summarizes the processing of words
 ;; returns the words as a vector
 (defn summarize [pos words]
@@ -67,8 +73,13 @@
 ;; and then insert them into the "words" database
 ;; collection
 (defn process-words [pos]
-  (->> (start pos)
+  (->> pos
        (read-index)
        (merge-data pos)
        (summarize pos)
        (insert-words)))
+
+;; reads in sentiment and updates the db
+(defn add-sentiment []
+  (->> (read-sentinet)
+       (update-sentiment)))
