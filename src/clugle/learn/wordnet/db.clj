@@ -29,5 +29,21 @@
     (mc/update (connect-db DB_NAME)
                (:words COLLECTIONS)
                {:$and [{:pos (:pos sentiment)}
-                       {:lemma (:word sentiment)}]}
+                       {:offset (:offset sentiment)}]}
                {:$set {:sentiment sentiment}})))
+
+;; finds a reference in the database.
+;; unique identification is done by
+;; using the combo of part of speech and 
+;; lemma offset
+(defn get-ref [pos offset]
+  (mc/find (connect-db DB_NAME)
+           (:words COLLECTIONS)
+           {:$and [{:pos pos
+                    :offset offset}]}))
+
+;; finds ALL entries for a given word
+(defn get-entries [word]
+  (mc/find-maps (connect-db DB_NAME)
+                   (:words COLLECTIONS)
+                   {:lemma word}))

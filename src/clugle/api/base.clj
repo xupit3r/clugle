@@ -4,6 +4,7 @@
               [clugle.learn.matrix.base :refer [m-add]]
               [clugle.learn.text.base :refer [ngram score-sentiment weighted]]
               [clugle.web.page :refer [process]]
+              [clugle.learn.wordnet.analysis :refer [lookup-words]]
               [compojure.core :refer [defroutes GET]]
               [compojure.route :refer [not-found]]))
 
@@ -26,4 +27,11 @@
     (handler m-add
              {:m1 types/json
               :m2 types/json}))
+  (GET "/api/learn/wordnet/words/sentence" []
+    (handler lookup-words
+             {:sentence types/string}))
   (not-found "no endpoint, bruh..."))
+
+;; updating swim
+;; updating swim
+;; updating base

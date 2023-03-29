@@ -1,5 +1,7 @@
 (ns clugle.api.utils
-  (:require [cheshire.core :refer [encode]]))
+  (:require [cheshire.core :refer [encode]]
+            [monger.json]
+            [monger.joda-time]))
 
 (defn extract-params [params req]
   (map (fn [key] 

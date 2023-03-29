@@ -47,3 +47,13 @@
    "42" "verb.stative"
    "43" "verb.weather"
    "44" "adj.ppl"})
+
+;; maps a part of speech flag to 
+;; a symbol representing that part
+;; of speech
+(def POS_TYPE
+  {"n" :noun
+   "v" :verb
+   "a" :adjective
+   "s" :adjective-satelite
+   "r" :adverb})
