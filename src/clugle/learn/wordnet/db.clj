@@ -36,14 +36,23 @@
 ;; unique identification is done by
 ;; using the combo of part of speech and 
 ;; lemma offset
-(defn get-ref [pos offset]
-  (mc/find (connect-db DB_NAME)
-           (:words COLLECTIONS)
-           {:$and [{:pos pos
-                    :offset offset}]}))
+(defn get-ref [ref]
+  (mc/find-one-as-map (connect-db DB_NAME)
+                      (:words COLLECTIONS)
+                      {:$and [{:pos (:pos ref)
+                               :offset (:offset ref)}]}
+                      {:sentiment.positive 1
+                       :sentiment.negative 1
+                       :lemma 1}))
 
 ;; finds ALL entries for a given word
 (defn get-entries [word]
   (mc/find-maps (connect-db DB_NAME)
-                   (:words COLLECTIONS)
-                   {:lemma word}))
+                (:words COLLECTIONS)
+                {:lemma word}
+                {:refs 1
+                 :pos 1
+                 :offset 1
+                 :lemma 1
+                 :sentiment.positive 1
+                 :sentiment.negative 1}))
