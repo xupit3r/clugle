@@ -2,23 +2,49 @@
   (:require [clojure.string :as str]
             [clugle.learn.text.preprocess
              :refer [remove-punc
-                     remove-stops
-                     remove-whitespace
+                     get-stops
                      tokenize]]
             [clugle.learn.wordnet.db
              :refer [get-entries
-                     get-ref]]
-            [clugle.util.hlpr
-             :refer [vec-range]]))
+                     get-ref]]))
 
+;; replace stop words with empty strings...
+(defn replace-stops [tokens]
+  (let [stops (get-stops :english)]
+    (mapv #(if (contains? stops %) "" %) tokens)))
 
-;; creates some groups out of the supplied tokens
-(defn group-em [n tokens]
-  (vec
-   (for [i (vec-range tokens)]
-     (vec
-      (for [j (range n)]
-        (nth tokens (+ i j) ""))))))
+;; recursively collects adjacent tokens into a group
+;; from a given starting point in a sequence
+(defn groups [collected tokens]
+  (if (str/blank? (first tokens))
+    collected
+    (groups (conj collected (first tokens))
+            (rest tokens))))
+
+;; walks over a sequence and creates groups
+;; of continuous tokens
+(defn create-groups [tokens]
+  (for [i (range 0 (count tokens))
+        :let [tkn (nth tokens i "")]]
+    (if (str/blank? tkn) []
+      (groups [tkn]
+              (nthrest tokens (+ i 1))))))
+
+;; creates the string combos for a given group
+(defn combos [groups]
+  (mapv #(vec
+          (reverse
+           (for [i (range 0 (count %))]
+             (str/join "_" (subvec % 0 (+ i 1))))))
+        groups))
+
+;; will find adjacent tokens and create possible
+;; wordnet lookups amongst the tokens
+(defn build-lookups [tokens]
+  (->> tokens
+       (create-groups)
+       (filterv seq)
+       (combos)))
 
 ;; performs some basic cleanup on the provided
 ;; sentence
@@ -28,8 +54,8 @@
    str/lower-case
    remove-punc
    tokenize
-   remove-stops
-   remove-whitespace))
+   replace-stops
+   build-lookups))
 
 ;; resolves a sequence of refs,
 ;; returning a vector of the resolved
