@@ -67,7 +67,7 @@
 ;; given a sequence of word entries, this will 
 ;; resolve references within those entries
 (defn prepare-word-entries [word-entries]
-  (mapv
+  (pmap
    #(assoc % :refs (resolve-refs (:refs %)))
    word-entries))
 
@@ -75,7 +75,7 @@
 ;; a set of possible candidates
 (defn get-likely-entries [candidates]
   (->> candidates
-       (mapv get-entries)
+       (pmap get-entries)
        (some #(if (seq %) % false))))
 
 ;; given a setence, this will assign parts
