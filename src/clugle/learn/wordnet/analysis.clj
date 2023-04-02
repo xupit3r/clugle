@@ -71,10 +71,17 @@
    #(assoc % :refs (resolve-refs (:refs %)))
    word-entries))
 
+;; grabs the most likely entries set amongs
+;; a set of possible candidates
+(defn get-likely-entries [candidates]
+  (->> candidates
+       (mapv get-entries)
+       (some #(if (seq %) % false))))
+
 ;; given a setence, this will assign parts
 ;; of speech to all known words
 (defn lookup-words [sentence]
   (->> sentence
        (prepare-sentence)
-       (mapv get-entries)
+       (mapv get-likely-entries)
        (mapv prepare-word-entries)))
