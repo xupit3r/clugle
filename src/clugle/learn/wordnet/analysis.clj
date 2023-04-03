@@ -66,17 +66,32 @@
 
 ;; given a sequence of word entries, this will 
 ;; resolve references within those entries
-(defn prepare-word-entries [word-entries]
-  (pmap
-   #(assoc % :refs (resolve-refs (:refs %)))
-   word-entries))
+(defn prepare-word-entries [token-obj]
+  (assoc token-obj :entries
+         (pmap
+          #(assoc % :refs (resolve-refs (:refs %)))
+          (:entries token-obj))))
 
 ;; grabs the most likely entries set amongs
 ;; a set of possible candidates
 (defn get-likely-entries [candidates]
   (->> candidates
-       (pmap get-entries)
-       (some #(if (seq %) % false))))
+       (pmap #(hash-map :token % :entries (get-entries %)))
+       (some #(if (seq (:entries %)) % false))))
+
+;; simple function to pull a token from the
+;; token candidate list
+(defn pull-token [idx tokens]
+  (get (nth tokens idx {}) :token ""))
+
+;; simplifies our list by removing any entries that 
+;; are subsumed by a previous word/phrase
+(defn simplify [tokens]
+  (for [i (range 0 (count tokens))
+        :let [tkn (pull-token i tokens)
+              prv (pull-token (- i 1) tokens)]
+              :when (nil? (str/index-of prv tkn))]
+    (get tokens i)))
 
 ;; given a setence, this will assign parts
 ;; of speech to all known words
@@ -84,4 +99,5 @@
   (->> sentence
        (prepare-sentence)
        (mapv get-likely-entries)
+       (simplify)
        (mapv prepare-word-entries)))
