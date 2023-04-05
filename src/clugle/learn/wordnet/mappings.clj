@@ -48,7 +48,7 @@
    "43" "verb.weather"
    "44" "adj.ppl"})
 
-;; maps a part of speech flag to 
+;; maps a part of speech flag to
 ;; a symbol representing that part
 ;; of speech
 (def POS_TYPE
@@ -57,3 +57,25 @@
    "a" :adjective
    "s" :adjective-satelite
    "r" :adverb})
+
+;; maps CoreNLP parts of speech to
+;; wordnet parts of speech
+(def CORE_TO_WORDNET
+  {"JJ" "a"
+   "JJR" "a"
+   "JJS" "a" 
+   "NN" "n"
+   "NNS" "n"
+   "NNP" "n"
+   "NNPS" "n"
+   "PRP" "n"
+   "PRP$" "n"
+   "RB" "r"
+   "RBR" "r"
+   "RBS" "r" 
+   "VB" "v"
+   "VBD" "v"
+   "VBG" "v"
+   "VBN" "v"
+   "VBP" "v"
+   "VBZ" "v"})
