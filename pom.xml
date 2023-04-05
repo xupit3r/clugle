@@ -18,7 +18,7 @@
     <url>https://github.com/xupit3r/clugle</url>
     <connection>scm:git:git://github.com/xupit3r/clugle.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/xupit3r/clugle.git</developerConnection>
-    <tag>1c36a6fc46085a381d674677991114a85c18d7fc</tag>
+    <tag>3e91542d9ec266089af3e7a54d6190559c8f30fe</tag>
   </scm>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -112,6 +112,28 @@
       <groupId>com.novemberain</groupId>
       <artifactId>monger</artifactId>
       <version>3.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>clj-time</groupId>
+      <artifactId>clj-time</artifactId>
+      <version>0.15.2</version>
+    </dependency>
+    <dependency>
+      <groupId>dk.simongray</groupId>
+      <artifactId>datalinguist</artifactId>
+      <version>0.2.171</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>4.4.0</version>
+      <classifier>models</classifier>
+    </dependency>
+    <dependency>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>4.4.0</version>
+      <classifier>models-english</classifier>
     </dependency>
   </dependencies>
 </project>

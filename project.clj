@@ -13,7 +13,11 @@
                  [babashka/fs "0.3.17"]
                  [environ "1.2.0"]
                  [com.novemberain/monger "3.5.0"]
-                 [clj-time "0.15.2"]]
+                 [clj-time "0.15.2"]
+                 [org.slf4j/slf4j-simple "2.0.7"]
+                 [edu.stanford.nlp/stanford-corenlp "4.4.0"]
+                 [edu.stanford.nlp/stanford-corenlp "4.4.0" :classifier "models"]
+                 [edu.stanford.nlp/stanford-corenlp "4.4.0" :classifier "models-english"]]
   :plugins [[lein-environ "1.2.0"]]
   :repl-options {:init-ns clugle.core}
   :main clugle.core)
